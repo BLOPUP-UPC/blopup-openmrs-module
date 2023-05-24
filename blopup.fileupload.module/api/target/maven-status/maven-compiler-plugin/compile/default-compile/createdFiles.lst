@@ -1,0 +1,6 @@
+org/openmrs/module/blopup/fileupload/module/api/dao/BlopupfileuploadmoduleDao.class
+org/openmrs/module/blopup/fileupload/module/BlopupfileuploadmoduleActivator.class
+org/openmrs/module/blopup/fileupload/module/Item.class
+org/openmrs/module/blopup/fileupload/module/BlopupfileuploadmoduleConfig.class
+org/openmrs/module/blopup/fileupload/module/api/impl/BlopupfileuploadmoduleServiceImpl.class
+org/openmrs/module/blopup/fileupload/module/api/BlopupfileuploadmoduleService.class
