@@ -15,13 +15,19 @@ import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.blopup.fileupload.module.BlopupfileuploadmoduleConfig;
 import org.openmrs.module.blopup.fileupload.module.Item;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * The main service of this module, which is exposed for other modules. See
  * moduleApplicationContext.xml on how it is wired up.
  */
 public interface BlopupfileuploadmoduleService extends OpenmrsService {
-	
+
+
+
+	void init();
+
+	void store(MultipartFile file);
 	/**
 	 * Returns an item by uuid. It can be called by any authenticated user. It is fetched in read
 	 * only transaction.
