@@ -67,5 +67,7 @@
 
 	<properties>
 		<openmrsPlatformVersion>1.11.6</openmrsPlatformVersion>
+		<openMRSVersion.Rest>2.4</openMRSVersion.Rest>
+
 	</properties>
 </project>
