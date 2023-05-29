@@ -29,34 +29,32 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping(value = "/rest/" + RestConstants.VERSION_1 + "/upload")
 public class FileUploadController extends BaseRestController {
-
-    /**
-     * Logger for this class and subclasses
-     */
-    protected final Log log = LogFactory.getLog(getClass());
-
-
-    private final BlopupfileuploadmoduleService storageService;
-
-    @Autowired
-    public FileUploadController(BlopupfileuploadmoduleService storageService) {
-        this.storageService = storageService;
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file) {
-
-
-        if (file == null || file.isEmpty())
-            throw new StorageException("Failed to store empty file.");
-
-        storageService.store(file);
-
-        return new ResponseEntity("You successfully uploaded " + file.getOriginalFilename() + "!", HttpStatus.OK);
-    }
-
-    @ExceptionHandler(StorageFileNotFoundException.class)
-    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
-        return new ResponseEntity(exc.getMessage(), HttpStatus.NOT_FOUND);
-    }
+	
+	/**
+	 * Logger for this class and subclasses
+	 */
+	protected final Log log = LogFactory.getLog(getClass());
+	
+	private final BlopupfileuploadmoduleService storageService;
+	
+	@Autowired
+	public FileUploadController(BlopupfileuploadmoduleService storageService) {
+		this.storageService = storageService;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file) {
+		
+		if (file == null || file.isEmpty())
+			throw new StorageException("Failed to store empty file.");
+		
+		storageService.store(file);
+		
+		return new ResponseEntity("You successfully uploaded " + file.getOriginalFilename() + "!", HttpStatus.OK);
+	}
+	
+	@ExceptionHandler(StorageFileNotFoundException.class)
+	public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
+		return new ResponseEntity(exc.getMessage(), HttpStatus.NOT_FOUND);
+	}
 }

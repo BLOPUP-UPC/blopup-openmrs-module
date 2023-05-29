@@ -30,19 +30,19 @@ import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implements BlopupfileuploadmoduleService {
-
-    BlopupfileuploadmoduleDao dao;
-
-    UserService userService;
-
-    private final Path rootLocation;
-
-    @Autowired
-    public BlopupfileuploadmoduleServiceImpl(StorageProperties properties) {
-        this.rootLocation = properties == null ? Paths.get("/legal_consent") : Paths.get(properties.getLocation());
-    }
-
-    @Override
+	
+	BlopupfileuploadmoduleDao dao;
+	
+	UserService userService;
+	
+	private final Path rootLocation;
+	
+	@Autowired
+	public BlopupfileuploadmoduleServiceImpl(StorageProperties properties) {
+		this.rootLocation = properties == null ? Paths.get("/legal_consent") : Paths.get(properties.getLocation());
+	}
+	
+	@Override
     public void store(MultipartFile file) {
         try {
             init();
@@ -63,41 +63,42 @@ public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implem
             throw new StorageException("Failed to store file.", e);
         }
     }
-
-    @Override
-    public void init() {
-        try {
-            Files.createDirectories(rootLocation);
-        } catch (IOException e) {
-            throw new StorageException("Could not initialize storage", e);
-        }
-    }
-
-    /**
-     * Injected in moduleApplicationContext.xml
-     */
-    public void setDao(BlopupfileuploadmoduleDao dao) {
-        this.dao = dao;
-    }
-
-    /**
-     * Injected in moduleApplicationContext.xml
-     */
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    @Override
-    public Item getItemByUuid(String uuid) throws APIException {
-        return dao.getItemByUuid(uuid);
-    }
-
-    @Override
-    public Item saveItem(Item item) throws APIException {
-        if (item.getOwner() == null) {
-            item.setOwner(userService.getUser(1));
-        }
-
-        return dao.saveItem(item);
-    }
+	
+	@Override
+	public void init() {
+		try {
+			Files.createDirectories(rootLocation);
+		}
+		catch (IOException e) {
+			throw new StorageException("Could not initialize storage", e);
+		}
+	}
+	
+	/**
+	 * Injected in moduleApplicationContext.xml
+	 */
+	public void setDao(BlopupfileuploadmoduleDao dao) {
+		this.dao = dao;
+	}
+	
+	/**
+	 * Injected in moduleApplicationContext.xml
+	 */
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+	
+	@Override
+	public Item getItemByUuid(String uuid) throws APIException {
+		return dao.getItemByUuid(uuid);
+	}
+	
+	@Override
+	public Item saveItem(Item item) throws APIException {
+		if (item.getOwner() == null) {
+			item.setOwner(userService.getUser(1));
+		}
+		
+		return dao.saveItem(item);
+	}
 }

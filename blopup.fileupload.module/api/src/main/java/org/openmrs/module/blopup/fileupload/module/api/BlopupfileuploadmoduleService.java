@@ -22,12 +22,11 @@ import org.springframework.web.multipart.MultipartFile;
  * moduleApplicationContext.xml on how it is wired up.
  */
 public interface BlopupfileuploadmoduleService extends OpenmrsService {
-
-
-
+	
 	void init();
-
+	
 	void store(MultipartFile file);
+	
 	/**
 	 * Returns an item by uuid. It can be called by any authenticated user. It is fetched in read
 	 * only transaction.
