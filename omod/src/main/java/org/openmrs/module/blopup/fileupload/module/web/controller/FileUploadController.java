@@ -9,6 +9,9 @@
  */
 package org.openmrs.module.blopup.fileupload.module.web.controller;
 
+import io.github.bucket4j.Bandwidth;
+import io.github.bucket4j.Bucket;
+import io.github.bucket4j.Refill;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.blopup.fileupload.module.api.BlopupfileuploadmoduleService;
@@ -26,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Duration;
+
 @Controller
 @RequestMapping(value = "/rest/" + RestConstants.VERSION_1 + "/upload")
 public class FileUploadController extends BaseRestController {
@@ -37,20 +42,29 @@ public class FileUploadController extends BaseRestController {
 	
 	private final BlopupfileuploadmoduleService storageService;
 	
+	private final Bucket bucket;
+	
 	@Autowired
 	public FileUploadController(BlopupfileuploadmoduleService storageService) {
 		this.storageService = storageService;
+		
+		Bandwidth limit = Bandwidth.classic(3, Refill.greedy(3, Duration.ofMinutes(1)));
+		bucket = Bucket.builder().addLimit(limit).build();
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file) {
+		if (bucket.tryConsume(1)) {
+			if (file == null || file.isEmpty())
+				throw new StorageException("Failed to store empty file.");
+			
+			storageService.store(file);
+			
+			return new ResponseEntity("You have successfully uploaded " + file.getOriginalFilename() + "!", HttpStatus.OK);
+		}
+		return new ResponseEntity("Too many request! I only allow 3 requests per minute, please try again in 5 minutes",
+		        HttpStatus.TOO_MANY_REQUESTS);
 		
-		if (file == null || file.isEmpty())
-			throw new StorageException("Failed to store empty file.");
-		
-		storageService.store(file);
-		
-		return new ResponseEntity("You successfully uploaded " + file.getOriginalFilename() + "!", HttpStatus.OK);
 	}
 	
 	@ExceptionHandler(StorageFileNotFoundException.class)
