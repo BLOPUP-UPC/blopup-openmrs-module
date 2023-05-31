@@ -12,7 +12,7 @@ package org.openmrs.module.blopup.fileupload.module.api.dao;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.api.db.hibernate.DbSession;
 import org.openmrs.api.db.hibernate.DbSessionFactory;
-import org.openmrs.module.blopup.fileupload.module.Item;
+import org.openmrs.module.blopup.fileupload.module.LegalConsent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -26,12 +26,13 @@ public class BlopupfileuploadmoduleDao {
 		return sessionFactory.getCurrentSession();
 	}
 	
-	public Item getItemByUuid(String uuid) {
-		return (Item) getSession().createCriteria(Item.class).add(Restrictions.eq("uuid", uuid)).uniqueResult();
+	public LegalConsent getLegalConsentByUuid(String uuid) {
+		return (LegalConsent) getSession().createCriteria(LegalConsent.class).add(Restrictions.eq("uuid", uuid))
+		        .uniqueResult();
 	}
 	
-	public Item saveItem(Item item) {
-		getSession().saveOrUpdate(item);
-		return item;
+	public LegalConsent saveLegalConsent(LegalConsent legalConsent) {
+		getSession().saveOrUpdate(legalConsent);
+		return legalConsent;
 	}
 }

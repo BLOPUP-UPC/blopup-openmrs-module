@@ -10,17 +10,16 @@
 package org.openmrs.module.blopup.fileupload.module.api.impl;
 
 import org.openmrs.api.APIException;
-import org.openmrs.api.UserService;
+import org.openmrs.api.PatientService;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.blopup.fileupload.module.Item;
+import org.openmrs.module.blopup.fileupload.module.LegalConsent;
 import org.openmrs.module.blopup.fileupload.module.api.BlopupfileuploadmoduleService;
 import org.openmrs.module.blopup.fileupload.module.api.dao.BlopupfileuploadmoduleDao;
 import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageException;
-import org.openmrs.module.blopup.fileupload.module.api.models.StorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -33,23 +32,22 @@ public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implem
 	
 	BlopupfileuploadmoduleDao dao;
 	
-	UserService userService;
+	PatientService patientService;
 	
 	private final Path rootLocation;
 	
-	@Autowired
-	public BlopupfileuploadmoduleServiceImpl(StorageProperties properties) {
-		this.rootLocation = properties == null ? Paths.get("/legal_consent") : Paths.get(properties.getLocation());
+	public BlopupfileuploadmoduleServiceImpl() {
+		this.rootLocation = Paths.get("/legal_consent");
 	}
 	
 	@Override
     public void store(MultipartFile file) {
         try {
-            init();
 
             Path destinationFile = this.rootLocation.resolve(
                             Paths.get(Objects.requireNonNull(file.getOriginalFilename())))
                     .normalize().toAbsolutePath();
+
             if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
                 // This is a security check
                 throw new StorageException(
@@ -64,16 +62,6 @@ public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implem
         }
     }
 	
-	@Override
-	public void init() {
-		try {
-			Files.createDirectories(rootLocation);
-		}
-		catch (IOException e) {
-			throw new StorageException("Could not initialize storage", e);
-		}
-	}
-	
 	/**
 	 * Injected in moduleApplicationContext.xml
 	 */
@@ -84,21 +72,17 @@ public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implem
 	/**
 	 * Injected in moduleApplicationContext.xml
 	 */
-	public void setUserService(UserService userService) {
-		this.userService = userService;
+	public void setPatientService(PatientService patientService) {
+		this.patientService = patientService;
 	}
 	
 	@Override
-	public Item getItemByUuid(String uuid) throws APIException {
-		return dao.getItemByUuid(uuid);
+	public LegalConsent getLegalConsentByUuid(String uuid) throws APIException {
+		return dao.getLegalConsentByUuid(uuid);
 	}
 	
 	@Override
-	public Item saveItem(Item item) throws APIException {
-		if (item.getOwner() == null) {
-			item.setOwner(userService.getUser(1));
-		}
-		
-		return dao.saveItem(item);
+	public LegalConsent saveLegalConsent(@NotNull LegalConsent legalConsent) throws APIException {
+		return dao.saveLegalConsent(legalConsent);
 	}
 }

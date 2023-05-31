@@ -28,33 +28,33 @@ import java.util.Objects;
  * BaseModuleContextSensitiveTest, thus it is run without the in-memory DB and Spring context.
  */
 public class BlopupfileuploadmoduleServiceTest {
-
+	
 	@Mock
 	BlopupfileuploadmoduleServiceImpl basicModuleService;
-
+	
 	@InjectMocks
 	FileUploadController fileUploadController;
-
+	
 	@Before
 	public void setupMocks() {
 		MockitoAnnotations.initMocks(this);
 	}
-
+	
 	@Test
 	public void shouldSaveUploadedFile() {
 		MockMultipartFile multipartFile = new MockMultipartFile("file", "test.txt", "text/plain",
 		        "Spring Framework".getBytes());
-
+		
 		ResponseEntity response = fileUploadController.handleFileUpload(multipartFile);
 		assert (response.getStatusCode().equals(HttpStatus.OK));
 		assert (Objects.equals(response.getBody(), "You have successfully uploaded test.txt!"));
-
+		
 	}
-
+	
 	@Test(expected = StorageException.class)
 	public void shouldThrowStorageExceptionIfFileIsEmpty() {
-
+		
 		fileUploadController.handleFileUpload(null);
-
+		
 	}
 }

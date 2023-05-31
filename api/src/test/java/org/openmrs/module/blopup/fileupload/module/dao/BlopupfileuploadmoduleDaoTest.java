@@ -3,19 +3,21 @@
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
  * the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
- *
+ * <p>
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-package org.openmrs.module.blopup.fileupload.module.api.dao;
+package org.openmrs.module.blopup.fileupload.module.dao;
 
-import org.junit.Test;
 import org.junit.Ignore;
-import org.openmrs.api.UserService;
+import org.junit.Test;
+import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.blopup.fileupload.module.Item;
+import org.openmrs.module.blopup.fileupload.module.LegalConsent;
+import org.openmrs.module.blopup.fileupload.module.api.dao.BlopupfileuploadmoduleDao;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
@@ -31,28 +33,27 @@ public class BlopupfileuploadmoduleDaoTest extends BaseModuleContextSensitiveTes
 	BlopupfileuploadmoduleDao dao;
 	
 	@Autowired
-	UserService userService;
+	PatientService patientService;
 	
 	@Test
-	@Ignore("Unignore if you want to make the Item class persistable, see also Item and liquibase.xml")
 	public void saveItem_shouldSaveAllPropertiesInDb() {
 		//Given
-		Item item = new Item();
-		item.setDescription("some description");
-		item.setOwner(userService.getUser(1));
+		LegalConsent legalConsent = new LegalConsent();
+		legalConsent.setFilePath("path_to_legal_consent");
+		legalConsent.setPatient(patientService.getPatientByUuid("43e633de-4986-42a0-a7f5-673f5dcba078"));
 		
 		//When
-		dao.saveItem(item);
+		dao.saveLegalConsent(legalConsent);
 		
-		//Let's clean up the cache to be sure getItemByUuid fetches from DB and not from cache
+		//Let's clean up the cache to be sure getLegalConsentByUuid fetches from DB and not from cache
 		Context.flushSession();
 		Context.clearSession();
 		
 		//Then
-		Item savedItem = dao.getItemByUuid(item.getUuid());
+		LegalConsent savedLegalConsent = dao.getLegalConsentByUuid(legalConsent.getUuid());
 		
-		assertThat(savedItem, hasProperty("uuid", is(item.getUuid())));
-		assertThat(savedItem, hasProperty("owner", is(item.getOwner())));
-		assertThat(savedItem, hasProperty("description", is(item.getDescription())));
+		assertThat(savedLegalConsent, hasProperty("uuid", is(legalConsent.getUuid())));
+		assertThat(savedLegalConsent, hasProperty("patient", is(legalConsent.getPatient())));
+		assertThat(savedLegalConsent, hasProperty("filePath", is(legalConsent.getFilePath())));
 	}
 }
