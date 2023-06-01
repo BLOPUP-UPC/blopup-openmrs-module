@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
 import java.time.Duration;
 
 @Controller
@@ -53,12 +54,12 @@ public class FileUploadController extends BaseRestController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file) {
+	public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file, @NotNull(message = "Patient uuid cannot be null") @RequestParam("patientUuid") String patientUuid) {
 		if (bucket.tryConsume(1)) {
 			if (file == null || file.isEmpty())
 				throw new StorageException("Failed to store empty file.");
 			
-			storageService.store(file);
+			storageService.store(file, patientUuid);
 			
 			return new ResponseEntity("You have successfully uploaded " + file.getOriginalFilename() + "!", HttpStatus.OK);
 		}

@@ -9,6 +9,7 @@
  */
 package org.openmrs.module.blopup.fileupload.module.api.impl;
 
+import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.impl.BaseOpenmrsService;
@@ -41,7 +42,7 @@ public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implem
 	}
 	
 	@Override
-    public void store(MultipartFile file) {
+    public void store(MultipartFile file, String patientUuid) {
         try {
 
             Path destinationFile = this.rootLocation.resolve(
@@ -56,6 +57,12 @@ public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implem
             try (InputStream inputStream = file.getInputStream()) {
                 Files.copy(inputStream, destinationFile,
                         StandardCopyOption.REPLACE_EXISTING);
+				//#region --save to database--
+				Patient patient = patientService.getPatientByUuid(patientUuid);
+				LegalConsent legalConsent = new LegalConsent();
+				legalConsent.setFilePath(destinationFile.toFile().getPath());
+				legalConsent.setPatient(patient);
+				//#endregion
             }
         } catch (IOException e) {
             throw new StorageException("Failed to store file.", e);

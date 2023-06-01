@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface BlopupfileuploadmoduleService extends OpenmrsService {
 	
-	void store(MultipartFile file);
+	void store(MultipartFile file, String patientUuid);
 	
 	/**
 	 * Returns an item by uuid. It can be called by any authenticated user. It is fetched in read
