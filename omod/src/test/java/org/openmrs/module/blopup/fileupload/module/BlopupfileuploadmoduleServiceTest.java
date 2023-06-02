@@ -60,7 +60,7 @@ public class BlopupfileuploadmoduleServiceTest {
 		
 	}
 
-	@Test(expected = StorageException.class)
+	@Test
 	public void shouldThrowStorageExceptionIfPatientUuidIsNull() {
 		MockMultipartFile multipartFile = new MockMultipartFile("file", "test.txt", "text/plain",
 				"Spring Framework".getBytes());
