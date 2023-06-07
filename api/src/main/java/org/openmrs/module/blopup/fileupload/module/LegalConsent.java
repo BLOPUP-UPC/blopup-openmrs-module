@@ -11,9 +11,11 @@ package org.openmrs.module.blopup.fileupload.module;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.openmrs.BaseOpenmrsData;
+import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.Patient;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 /**
  * Please note that a corresponding table schema must be created in liquibase.xml.
@@ -21,12 +23,15 @@ import javax.persistence.*;
 //Uncomment 2 lines below if you want to make the Item class persistable, see also BlopupfileuploadmoduleDaoTest and liquibase.xml
 @Entity(name = "blopup_legal_consent")
 @Table(name = "blopup_legal_consent")
-public class LegalConsent extends BaseOpenmrsData {
+public class LegalConsent {
 	
 	@Id
 	@GeneratedValue
 	@Column(name = "blopup_legal_consent_id")
 	private Integer id;
+	
+	@Column(name = "uuid", unique = true, nullable = false, length = 38)
+	private String uuid = UUID.randomUUID().toString();
 	
 	@OneToOne
 	@JoinColumn(name = "patient")
@@ -36,24 +41,20 @@ public class LegalConsent extends BaseOpenmrsData {
 	@Column(name = "file_path", length = 500)
 	private String filePath;
 	
-	@Override
 	public Integer getId() {
 		return id;
 	}
 	
-	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}
 	
-	@Override
 	public String getUuid() {
-		return super.getUuid();
+		return uuid;
 	}
 	
-	@Override
 	public void setUuid(String uuid) {
-		super.setUuid(uuid);
+		this.uuid = uuid;
 	}
 	
 	public Patient getPatient() {

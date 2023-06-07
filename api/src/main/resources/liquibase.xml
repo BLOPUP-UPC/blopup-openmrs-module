@@ -15,7 +15,7 @@
 
     <!-- Uncomment the changeset below if you want to make the Legal Consent class persistable, see also Item and BlopupfileuploadmoduleDaoTest -->
 
-    <changeSet id="blopup.fileupload.module-2016-08-02-12-21" author="raff">
+    <changeSet id="blopup.fileupload.module-2023-06-07-16-32" author="raff">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="blopup_legal_consent"/>
@@ -25,7 +25,7 @@
             Creating the blopup_legal_consent table
         </comment>
         <createTable tableName="blopup_legal_consent">
-            <column name="blopup_legal_consent.blopup_legal_consent_id" type="int" autoIncrement="true">
+            <column name="blopup_legal_consent_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="uuid" type="char(38)">
