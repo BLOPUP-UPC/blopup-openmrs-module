@@ -30,20 +30,9 @@ public class BlopupfileuploadmoduleActivator extends BaseModuleActivator {
      * @see #started()
      */
     public void started() {
-
+		
         log.info("Started Blopup fileupload module");
 
-        try {
-            Path rootLocation = Paths.get("/legal_consent");
-            if (Files.exists(rootLocation))
-                return;
-
-            log.info("Creating Blopup legal consent folder");
-
-            Files.createDirectories(rootLocation);
-        } catch (IOException e) {
-            throw new StorageException("Could not initialize storage", e);
-        }
     }
 
     /**
