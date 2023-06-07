@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.blopup.fileupload.module.api.BlopupfileuploadmoduleService;
 import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageException;
 import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageFileNotFoundException;
+import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.v1_0.controller.BaseRestController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
 import java.time.Duration;
 
 @Controller
@@ -54,14 +53,11 @@ public class FileUploadController extends BaseRestController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file, @NotNull(message = "Patient uuid cannot be null") @RequestParam("patientUuid") String patientUuid) {
+	public ResponseEntity handleFileUpload(@RequestBody LegalConsentRequest legalConsentRequest) {
 		if (bucket.tryConsume(1)) {
-			if (file == null || file.isEmpty())
-				throw new StorageException("Failed to store empty file.");
+			String fileName = storageService.store(legalConsentRequest);
 			
-			storageService.store(file, patientUuid);
-			
-			return new ResponseEntity("You have successfully uploaded " + file.getOriginalFilename() + "!", HttpStatus.OK);
+			return new ResponseEntity("You have successfully uploaded " + fileName + "!", HttpStatus.OK);
 		}
 		return new ResponseEntity("Too many request! I only allow 3 requests per minute, please try again in 5 minutes",
 		        HttpStatus.TOO_MANY_REQUESTS);
@@ -71,5 +67,10 @@ public class FileUploadController extends BaseRestController {
 	@ExceptionHandler(StorageFileNotFoundException.class)
 	public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
 		return new ResponseEntity(exc.getMessage(), HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(StorageException.class)
+	public ResponseEntity<?> handleStorageException(StorageException exc) {
+		return new ResponseEntity(exc.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 }
