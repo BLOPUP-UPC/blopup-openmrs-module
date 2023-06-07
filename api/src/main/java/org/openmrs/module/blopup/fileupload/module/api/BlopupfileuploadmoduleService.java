@@ -14,8 +14,8 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.blopup.fileupload.module.BlopupfileuploadmoduleConfig;
 import org.openmrs.module.blopup.fileupload.module.LegalConsent;
+import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * The main service of this module, which is exposed for other modules. See
@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface BlopupfileuploadmoduleService extends OpenmrsService {
 	
-	void store(MultipartFile file, String patientUuid);
+	String store(LegalConsentRequest legalConsentRequest);
 	
 	/**
 	 * Returns an item by uuid. It can be called by any authenticated user. It is fetched in read

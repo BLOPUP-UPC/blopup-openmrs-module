@@ -9,65 +9,77 @@
  */
 package org.openmrs.module.blopup.fileupload.module.api.impl;
 
+import org.apache.commons.io.FileUtils;
 import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.api.PatientService;
+import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.blopup.fileupload.module.LegalConsent;
 import org.openmrs.module.blopup.fileupload.module.api.BlopupfileuploadmoduleService;
 import org.openmrs.module.blopup.fileupload.module.api.dao.BlopupfileuploadmoduleDao;
 import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.multipart.MultipartFile;
+import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
+import org.openmrs.util.OpenmrsUtil;
+import org.springframework.transaction.annotation.Transactional;
+import sun.misc.BASE64Decoder;
 
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Objects;
+import java.io.File;
+import java.io.FileOutputStream;
 
+@Transactional
 public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implements BlopupfileuploadmoduleService {
 	
 	BlopupfileuploadmoduleDao dao;
 	
 	PatientService patientService;
 	
-	private final Path rootLocation;
-	
-	public BlopupfileuploadmoduleServiceImpl() {
-		this.rootLocation = Paths.get("/legal_consent");
-	}
-	
 	@Override
-    public void store(MultipartFile file, String patientUuid) {
-        try {
-
-            Path destinationFile = this.rootLocation.resolve(
-                            Paths.get(Objects.requireNonNull(file.getOriginalFilename())))
-                    .normalize().toAbsolutePath();
-
-            if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
-                // This is a security check
-                throw new StorageException(
-                        "Cannot store file outside current directory.");
-            }
-            try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, destinationFile,
-                        StandardCopyOption.REPLACE_EXISTING);
-				//#region --save to database--
-				Patient patient = patientService.getPatientByUuid(patientUuid);
-				LegalConsent legalConsent = new LegalConsent();
-				legalConsent.setFilePath(destinationFile.toFile().getPath());
-				legalConsent.setPatient(patient);
-				//#endregion
-            }
-        } catch (IOException e) {
-            throw new StorageException("Failed to store file.", e);
-        }
-    }
+	public String store(LegalConsentRequest legalConsentRequest) {
+		
+		String fileName = null;
+		try {
+			
+			if (legalConsentRequest.getFileByteString() != null) {
+				BASE64Decoder decoder = new BASE64Decoder();
+				byte[] decodedBytes = decoder.decodeBuffer(legalConsentRequest.getFileByteString());
+				File recordingDir = new File(OpenmrsUtil.getApplicationDataDirectory() + "/legal_consent");
+				if (!recordingDir.exists()) {
+					FileUtils.forceMkdir(recordingDir);
+				}
+				PatientService patientService = Context.getPatientService();
+				Patient patient = patientService.getPatientByUuid(legalConsentRequest.getPatientUuid());
+				
+				if (patient != null) {
+					fileName = patient.getPatientIdentifier().getIdentifier() + ".mp3";
+					
+					FileOutputStream fos = new FileOutputStream(recordingDir + "/" + fileName);
+					fos.write(decodedBytes);
+					fos.close();
+					
+					//#region --save to database--
+					LegalConsent exist = dao.getLegalConsentByFilePath(fileName);
+					if (exist != null) {
+						exist.setFilePath(fileName);
+						exist.setPatient(patient);
+					} else {
+						exist = new LegalConsent();
+						exist.setFilePath(fileName);
+						exist.setPatient(patient);
+					}
+					
+					dao.saveLegalConsent(exist);
+					//#endregion
+				}
+				
+			}
+			return fileName;
+		}
+		catch (Exception e) {
+			throw new StorageException("Failed to store file.", e);
+		}
+	}
 	
 	/**
 	 * Injected in moduleApplicationContext.xml
