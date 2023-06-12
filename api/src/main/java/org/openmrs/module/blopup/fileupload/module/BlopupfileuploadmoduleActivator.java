@@ -23,23 +23,23 @@ import java.nio.file.Paths;
  * This class contains the logic that is run every time this module is either started or shutdown
  */
 public class BlopupfileuploadmoduleActivator extends BaseModuleActivator {
-
-    private Log log = LogFactory.getLog(this.getClass());
-
-    /**
-     * @see #started()
-     */
-    public void started() {
+	
+	private Log log = LogFactory.getLog(this.getClass());
+	
+	/**
+	 * @see #started()
+	 */
+	public void started() {
 		
-        log.info("Started Blopup fileupload module");
-
-    }
-
-    /**
-     * @see #shutdown()
-     */
-    public void shutdown() {
-        log.info("Shutdown Blopup fileupload module");
-    }
-
+		log.info("Started Blopup fileupload module");
+		
+	}
+	
+	/**
+	 * @see #shutdown()
+	 */
+	public void shutdown() {
+		log.info("Shutdown Blopup fileupload module");
+	}
+	
 }
