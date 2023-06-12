@@ -27,6 +27,7 @@ import sun.misc.BASE64Decoder;
 import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 
 @Transactional
 public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implements BlopupfileuploadmoduleService {
@@ -49,7 +50,10 @@ public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implem
 					FileUtils.forceMkdir(recordingDir);
 				}
 				PatientService patientService = Context.getPatientService();
-				Patient patient = patientService.getPatientByUuid(legalConsentRequest.getPatientUuid());
+				Patient patient = null;
+				List<Patient> list = patientService.getPatients(legalConsentRequest.getPatientIdentifier());
+				if (list != null && !list.isEmpty())
+					patient = list.get(0);
 				
 				if (patient != null) {
 					fileName = patient.getPatientIdentifier().getIdentifier() + ".mp3";
