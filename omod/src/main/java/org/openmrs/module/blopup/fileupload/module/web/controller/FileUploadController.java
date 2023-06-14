@@ -59,18 +59,18 @@ public class FileUploadController extends BaseRestController {
 			
 			return new ResponseEntity("You have successfully uploaded " + fileName + "!", HttpStatus.OK);
 		}
-		return new ResponseEntity("Too many request! I only allow 3 requests per minute, please try again in 5 minutes",
-		        HttpStatus.TOO_MANY_REQUESTS);
-		
+		return new ResponseEntity("Too many request!", HttpStatus.TOO_MANY_REQUESTS);
 	}
 	
 	@ExceptionHandler(StorageFileNotFoundException.class)
 	public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
+		log.error(exc.getMessage(), exc);
 		return new ResponseEntity(exc.getMessage(), HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler(StorageException.class)
 	public ResponseEntity<?> handleStorageException(StorageException exc) {
+		log.error(exc.getMessage(), exc);
 		return new ResponseEntity(exc.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 }
