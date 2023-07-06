@@ -45,7 +45,7 @@ public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implem
 			if (legalConsentRequest.getFileByteString() != null) {
 				BASE64Decoder decoder = new BASE64Decoder();
 				byte[] decodedBytes = decoder.decodeBuffer(legalConsentRequest.getFileByteString());
-				File recordingDir = new File(OpenmrsUtil.getApplicationDataDirectory() + "/legal_consent");
+				File recordingDir = new File("../../../opt/app/legalConsentStore");
 				if (!recordingDir.exists()) {
 					FileUtils.forceMkdir(recordingDir);
 				}
