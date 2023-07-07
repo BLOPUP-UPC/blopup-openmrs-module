@@ -16,7 +16,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.blopup.fileupload.module.api.BlopupfileuploadmoduleService;
 import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageException;
-import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageFileNotFoundException;
 import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.v1_0.controller.BaseRestController;
@@ -72,13 +71,7 @@ public class FileUploadController extends BaseRestController {
 		}
 		return new ResponseEntity("Too many request!", HttpStatus.TOO_MANY_REQUESTS);
 	}
-	
-	@ExceptionHandler(StorageFileNotFoundException.class)
-	public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
-		log.error(exc.getMessage(), exc);
-		return new ResponseEntity(exc.getMessage(), HttpStatus.NOT_FOUND);
-	}
-	
+
 	@ExceptionHandler(StorageException.class)
 	public ResponseEntity<?> handleStorageException(StorageException exc) {
 		log.error(exc.getMessage(), exc);

@@ -46,7 +46,7 @@ public class FileUploadControllerTest {
     }
 
     @Test
-    public void shouldThrowStorageExceptionIfFileIsEmpty() {
+    public void shouldRespondWith400IfFileIsEmpty() {
         legalConsentRequest.setFileByteString("");
 
         Mockito.when(basicModuleService.store(legalConsentRequest)).thenThrow(new StorageException(""));
@@ -58,7 +58,7 @@ public class FileUploadControllerTest {
     }
 
     @Test
-    public void shouldThrowStorageExceptionIfFileIsNull() {
+    public void shouldRespondWith400IfFileIsNull() {
         legalConsentRequest.setFileByteString(null);
 
         Mockito.when(basicModuleService.store(legalConsentRequest)).thenThrow(new StorageException(""));
@@ -69,7 +69,7 @@ public class FileUploadControllerTest {
     }
 
     @Test
-    public void shouldThrowStorageExceptionIfPatientIsEmpty() {
+    public void shouldRespondWith400IfPatientIsEmpty() {
         legalConsentRequest.setPatientIdentifier("");
 
         Mockito.when(basicModuleService.store(legalConsentRequest)).thenThrow(new StorageException(""));
@@ -80,7 +80,7 @@ public class FileUploadControllerTest {
     }
 
     @Test
-    public void shouldThrowStorageExceptionIfPatientIsNull() {
+    public void shouldRespondWith400IfPatientIsNull() {
         legalConsentRequest.setPatientIdentifier(null);
 
         Mockito.when(basicModuleService.store(legalConsentRequest)).thenThrow(new StorageException(""));
@@ -91,7 +91,22 @@ public class FileUploadControllerTest {
     }
 
     @Test
-    public void shouldThrowStorageExceptionIfTooManyRequests() {
+    public void shouldRespondWith500IfErrorWritingFile(){
+
+    }
+
+    @Test
+    public void shouldRespondWith400IfEmptyBody(){
+
+    }
+
+    @Test
+    public void shouldRespondWith404IfPatientDoesNotExist(){
+
+    }
+
+    @Test
+    public void shouldRespondWith429IfTooManyRequests() {
         Bucket bucket = Mockito.mock(Bucket.class);
         Mockito.when(bucket.tryConsume(1)).thenReturn(false);
 
