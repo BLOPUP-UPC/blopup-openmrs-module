@@ -51,12 +51,23 @@ public class FileUploadController extends BaseRestController {
 		Bandwidth limit = Bandwidth.classic(3, Refill.greedy(3, Duration.ofMinutes(1)));
 		bucket = Bucket.builder().addLimit(limit).build();
 	}
-	
+
+	public FileUploadController(BlopupfileuploadmoduleService storageService, Bucket bucket) {
+		this.storageService = storageService;
+		this.bucket = bucket;
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity handleFileUpload(@RequestBody LegalConsentRequest legalConsentRequest) {
 		if (bucket.tryConsume(1)) {
+			if(legalConsentRequest.getFileByteString() == null || legalConsentRequest.getFileByteString().isEmpty()){
+				return new ResponseEntity("File cannot be empty or null!", HttpStatus.BAD_REQUEST);
+			}
+			if(legalConsentRequest.getPatientIdentifier() == null || legalConsentRequest.getPatientIdentifier().isEmpty()){
+				return new ResponseEntity("Patient identifier cannot be empty or null!", HttpStatus.BAD_REQUEST);
+			}
 			String fileName = storageService.store(legalConsentRequest);
-			
+
 			return new ResponseEntity("You have successfully uploaded " + fileName + "!", HttpStatus.OK);
 		}
 		return new ResponseEntity("Too many request!", HttpStatus.TOO_MANY_REQUESTS);
@@ -73,4 +84,5 @@ public class FileUploadController extends BaseRestController {
 		log.error(exc.getMessage(), exc);
 		return new ResponseEntity(exc.getMessage(), HttpStatus.BAD_REQUEST);
 	}
+
 }
