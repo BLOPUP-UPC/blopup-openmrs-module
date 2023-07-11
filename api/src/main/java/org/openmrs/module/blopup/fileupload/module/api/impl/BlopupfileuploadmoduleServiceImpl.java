@@ -20,7 +20,6 @@ import org.openmrs.module.blopup.fileupload.module.api.BlopupfileuploadmoduleSer
 import org.openmrs.module.blopup.fileupload.module.api.dao.BlopupfileuploadmoduleDao;
 import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageException;
 import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
-import org.openmrs.util.OpenmrsUtil;
 import org.springframework.transaction.annotation.Transactional;
 import sun.misc.BASE64Decoder;
 
@@ -33,9 +32,9 @@ import java.util.List;
 public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implements BlopupfileuploadmoduleService {
 	
 	BlopupfileuploadmoduleDao dao;
-	
+
 	PatientService patientService;
-	
+
 	@Override
 	public String store(LegalConsentRequest legalConsentRequest) {
 		
@@ -49,7 +48,7 @@ public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implem
 				if (!recordingDir.exists()) {
 					FileUtils.forceMkdir(recordingDir);
 				}
-				PatientService patientService = Context.getPatientService();
+				patientService = Context.getPatientService();
 				Patient patient = null;
 				List<Patient> list = patientService.getPatients(legalConsentRequest.getPatientIdentifier());
 				if (list != null && !list.isEmpty())

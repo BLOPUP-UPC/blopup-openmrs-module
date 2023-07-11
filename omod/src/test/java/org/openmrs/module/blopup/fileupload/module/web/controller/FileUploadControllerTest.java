@@ -49,8 +49,6 @@ public class FileUploadControllerTest {
     public void shouldRespondWith400IfFileIsEmpty() {
         legalConsentRequest.setFileByteString("");
 
-        Mockito.when(basicModuleService.store(legalConsentRequest)).thenThrow(new StorageException(""));
-
         ResponseEntity response = fileUploadController.handleFileUpload(legalConsentRequest);
         assert (response.getStatusCode().equals(HttpStatus.BAD_REQUEST));
         assert (Objects.equals(response.getBody(), "File cannot be empty or null!"));
@@ -61,8 +59,6 @@ public class FileUploadControllerTest {
     public void shouldRespondWith400IfFileIsNull() {
         legalConsentRequest.setFileByteString(null);
 
-        Mockito.when(basicModuleService.store(legalConsentRequest)).thenThrow(new StorageException(""));
-
         ResponseEntity response = fileUploadController.handleFileUpload(legalConsentRequest);
         assert (response.getStatusCode().equals(HttpStatus.BAD_REQUEST));
         assert (Objects.equals(response.getBody(), "File cannot be empty or null!"));
@@ -72,8 +68,6 @@ public class FileUploadControllerTest {
     public void shouldRespondWith400IfPatientIsEmpty() {
         legalConsentRequest.setPatientIdentifier("");
 
-        Mockito.when(basicModuleService.store(legalConsentRequest)).thenThrow(new StorageException(""));
-
         ResponseEntity response = fileUploadController.handleFileUpload(legalConsentRequest);
         assert (response.getStatusCode().equals(HttpStatus.BAD_REQUEST));
         assert (Objects.equals(response.getBody(), "Patient identifier cannot be empty or null!"));
@@ -82,8 +76,6 @@ public class FileUploadControllerTest {
     @Test
     public void shouldRespondWith400IfPatientIsNull() {
         legalConsentRequest.setPatientIdentifier(null);
-
-        Mockito.when(basicModuleService.store(legalConsentRequest)).thenThrow(new StorageException(""));
 
         ResponseEntity response = fileUploadController.handleFileUpload(legalConsentRequest);
         assert (response.getStatusCode().equals(HttpStatus.BAD_REQUEST));
@@ -111,8 +103,6 @@ public class FileUploadControllerTest {
         Mockito.when(bucket.tryConsume(1)).thenReturn(false);
 
         fileUploadController = new FileUploadController(basicModuleService, bucket);
-
-        Mockito.when(basicModuleService.store(legalConsentRequest)).thenThrow(new StorageException(""));
 
         ResponseEntity response = fileUploadController.handleFileUpload(legalConsentRequest);
 
