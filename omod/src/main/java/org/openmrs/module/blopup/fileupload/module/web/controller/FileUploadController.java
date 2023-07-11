@@ -23,13 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.validation.Valid;
 import java.time.Duration;
 
 @Controller
@@ -61,6 +59,9 @@ public class FileUploadController extends BaseRestController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity handleFileUpload(@RequestBody LegalConsentRequest legalConsentRequest) {
 		if (bucket.tryConsume(1)) {
+			if(legalConsentRequest == null){
+				return new ResponseEntity("Body cannot be null!", HttpStatus.BAD_REQUEST);
+			}
 			if(legalConsentRequest.getFileByteString() == null || legalConsentRequest.getFileByteString().isEmpty()){
 				return new ResponseEntity("File cannot be empty or null!", HttpStatus.BAD_REQUEST);
 			}

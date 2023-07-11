@@ -22,6 +22,7 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.blopup.fileupload.module.api.BlopupfileuploadmoduleService;
 import org.openmrs.module.blopup.fileupload.module.api.dao.BlopupfileuploadmoduleDao;
+import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageException;
 import org.openmrs.module.blopup.fileupload.module.api.impl.BlopupfileuploadmoduleServiceImpl;
 import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
 import org.powermock.api.mockito.PowerMockito;
@@ -29,6 +30,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.*;
+
+import static org.mockito.Matchers.any;
 
 /**
  * This is a unit test, which verifies logic in BlopupfileuploadmoduleService. It doesn't extend
@@ -80,4 +83,22 @@ public class BlopupfileuploadmoduleServiceTest {
 		assert(response.equals(fileName));
 	}
 
+	@Test
+	public void shouldNotSaveFileIfPatientDoesNotExist(){
+		LegalConsentRequest legalConsentRequest = new LegalConsentRequest();
+		legalConsentRequest.setPatientIdentifier("8FGPT");
+		legalConsentRequest.setFileByteString("File");
+
+		String fileName = "8FGPT" + ".mp3";
+
+		PowerMockito.mockStatic(Context.class);
+		PowerMockito.when(Context.getPatientService()).thenReturn(patientService);
+
+		Mockito.when(patientService.getPatients(any())).thenReturn(null);
+		Mockito.when(dao.getLegalConsentByFilePath(fileName)).thenReturn(new LegalConsent());
+
+		String response = blopupfileuploadmoduleService.store(legalConsentRequest);
+
+		assert(response.equals("Patient does not exist"));
+	}
 }

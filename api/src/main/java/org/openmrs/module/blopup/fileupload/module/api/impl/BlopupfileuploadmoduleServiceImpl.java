@@ -49,18 +49,16 @@ public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implem
 
 				Patient patient = getPatient(legalConsentRequest);
 
-				if (patient != null) {
-					fileName = patient.getPatientIdentifier().getIdentifier() + ".mp3";
+				if (patient == null) return "Patient does not exist";
 
-					fileStorageService.create(fileName);
+				fileName = patient.getPatientIdentifier().getIdentifier() + ".mp3";
 
-					saveToDatabase(fileName, patient);
-				}
-				
+				fileStorageService.create(fileName);
+
+				saveToDatabase(fileName, patient);
 			}
 			return fileName;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new StorageException("Failed to store file.", e);
 		}
 	}

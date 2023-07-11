@@ -83,12 +83,14 @@ public class FileUploadControllerTest {
     }
 
     @Test
-    public void shouldRespondWith500IfErrorWritingFile(){
-
+    public void shouldRespondWith400IfEmptyBody(){
+        ResponseEntity response = fileUploadController.handleFileUpload(null);
+        assert (response.getStatusCode().equals(HttpStatus.BAD_REQUEST));
+        assert (Objects.equals(response.getBody(), "Body cannot be null!"));
     }
 
     @Test
-    public void shouldRespondWith400IfEmptyBody(){
+    public void shouldRespondWith500IfErrorWritingFile(){
 
     }
 
