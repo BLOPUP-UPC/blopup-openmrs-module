@@ -7,6 +7,7 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
+package org.openmrs.module.blopup.fileupload.module;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;

@@ -7,6 +7,7 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
+package org.openmrs.module.blopup.fileupload.module;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,10 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.openmrs.module.blopup.fileupload.module.FileUploadController;
 import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageException;
 import org.openmrs.module.blopup.fileupload.module.api.impl.BlopupfileuploadmoduleServiceImpl;
 import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
+import org.openmrs.module.blopup.fileupload.module.web.controller.FileUploadController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
