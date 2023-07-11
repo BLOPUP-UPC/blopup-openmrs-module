@@ -9,71 +9,52 @@
  */
 package org.openmrs.module.blopup.fileupload.module.api.impl;
 
-import org.apache.commons.io.FileUtils;
 import org.openmrs.Patient;
 import org.openmrs.api.APIException;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.blopup.fileupload.module.FileStorageService;
 import org.openmrs.module.blopup.fileupload.module.LegalConsent;
 import org.openmrs.module.blopup.fileupload.module.api.BlopupfileuploadmoduleService;
 import org.openmrs.module.blopup.fileupload.module.api.dao.BlopupfileuploadmoduleDao;
 import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageException;
 import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
 import org.springframework.transaction.annotation.Transactional;
-import sun.misc.BASE64Decoder;
 
 import javax.validation.constraints.NotNull;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.List;
 
 @Transactional
 public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implements BlopupfileuploadmoduleService {
-	
+
 	BlopupfileuploadmoduleDao dao;
 
 	PatientService patientService;
 
 	@Override
 	public String store(LegalConsentRequest legalConsentRequest) {
-		
+
+		FileStorageService fileStorageService = new FileStorageService();
+
 		String fileName = null;
+
+		String fileString = legalConsentRequest.getFileByteString();
+
 		try {
-			
-			if (legalConsentRequest.getFileByteString() != null) {
-				BASE64Decoder decoder = new BASE64Decoder();
-				byte[] decodedBytes = decoder.decodeBuffer(legalConsentRequest.getFileByteString());
-				File recordingDir = new File("../../../opt/app/legalConsentStore");
-				if (!recordingDir.exists()) {
-					FileUtils.forceMkdir(recordingDir);
-				}
-				patientService = Context.getPatientService();
-				Patient patient = null;
-				List<Patient> list = patientService.getPatients(legalConsentRequest.getPatientIdentifier());
-				if (list != null && !list.isEmpty())
-					patient = list.get(0);
-				
+			if (fileString != null) {
+				fileStorageService.convertToByteArray(fileString);
+
+				fileStorageService.createRecordingDirectory();
+
+				Patient patient = getPatient(legalConsentRequest);
+
 				if (patient != null) {
 					fileName = patient.getPatientIdentifier().getIdentifier() + ".mp3";
-					
-					FileOutputStream fos = new FileOutputStream(recordingDir + "/" + fileName);
-					fos.write(decodedBytes);
-					fos.close();
-					
-					//#region --save to database--
-					LegalConsent exist = dao.getLegalConsentByFilePath(fileName);
-					if (exist != null) {
-						exist.setFilePath(fileName);
-						exist.setPatient(patient);
-					} else {
-						exist = new LegalConsent();
-						exist.setFilePath(fileName);
-						exist.setPatient(patient);
-					}
-					
-					dao.saveLegalConsent(exist);
-					//#endregion
+
+					fileStorageService.create(fileName);
+
+					saveToDatabase(fileName, patient);
 				}
 				
 			}
@@ -83,7 +64,26 @@ public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implem
 			throw new StorageException("Failed to store file.", e);
 		}
 	}
-	
+
+	private void saveToDatabase(String fileName, Patient patient) {
+		LegalConsent exist = dao.getLegalConsentByFilePath(fileName);
+		if (exist == null) {
+			exist = new LegalConsent();
+		}
+		exist.setFilePath(fileName);
+		exist.setPatient(patient);
+		dao.saveLegalConsent(exist);
+	}
+
+	private Patient getPatient(LegalConsentRequest legalConsentRequest) {
+		patientService = Context.getPatientService();
+		Patient patient = null;
+		List<Patient> list = patientService.getPatients(legalConsentRequest.getPatientIdentifier());
+		if (list != null && !list.isEmpty())
+			patient = list.get(0);
+		return patient;
+	}
+
 	/**
 	 * Injected in moduleApplicationContext.xml
 	 */
