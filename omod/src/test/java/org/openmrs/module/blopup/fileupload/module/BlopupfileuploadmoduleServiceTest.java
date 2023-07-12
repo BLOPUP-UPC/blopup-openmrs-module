@@ -83,7 +83,7 @@ public class BlopupfileuploadmoduleServiceTest {
 		assert(response.equals(fileName));
 	}
 
-	@Test
+	@Test (expected = StorageException.class)
 	public void shouldNotSaveFileIfPatientDoesNotExist(){
 		LegalConsentRequest legalConsentRequest = new LegalConsentRequest();
 		legalConsentRequest.setPatientIdentifier("8FGPT");
@@ -97,8 +97,6 @@ public class BlopupfileuploadmoduleServiceTest {
 		Mockito.when(patientService.getPatients(any())).thenReturn(null);
 		Mockito.when(dao.getLegalConsentByFilePath(fileName)).thenReturn(new LegalConsent());
 
-		String response = blopupfileuploadmoduleService.store(legalConsentRequest);
-
-		assert(response.equals("Patient does not exist"));
+		blopupfileuploadmoduleService.store(legalConsentRequest);
 	}
 }

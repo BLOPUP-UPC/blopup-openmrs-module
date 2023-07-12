@@ -10,7 +10,6 @@
 package org.openmrs.module.blopup.fileupload.module.api.impl;
 
 import org.openmrs.Patient;
-import org.openmrs.api.APIException;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
@@ -22,87 +21,50 @@ import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageExcepti
 import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Transactional
 public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implements BlopupfileuploadmoduleService {
 
-	BlopupfileuploadmoduleDao dao;
+    BlopupfileuploadmoduleDao dao;
 
-	PatientService patientService;
+    PatientService patientService;
 
-	@Override
-	public String store(LegalConsentRequest legalConsentRequest) {
+    @Override
+    public String store(LegalConsentRequest legalConsentRequest) {
 
-		FileStorageService fileStorageService = new FileStorageService();
+        FileStorageService fileStorageService = new FileStorageService();
 
-		String fileName = null;
+        String fileString = legalConsentRequest.getFileByteString();
 
-		String fileString = legalConsentRequest.getFileByteString();
+        try {
+            fileStorageService.convertToByteArray(fileString);
 
-		try {
-			if (fileString != null) {
-				fileStorageService.convertToByteArray(fileString);
+            fileStorageService.createRecordingDirectory();
 
-				fileStorageService.createRecordingDirectory();
+            patientService = Context.getPatientService();
+            List<Patient> patients = patientService.getPatients(legalConsentRequest.getPatientIdentifier());
 
-				Patient patient = getPatient(legalConsentRequest);
+            if (patients == null || patients.isEmpty())
+                throw new StorageException("Failed to store file. Patient not found");
 
-				if (patient == null) return "Patient does not exist";
+            Patient patient = patients.get(0);
+            String filePath = patient.getPatientIdentifier().getIdentifier() + ".mp3";
 
-				fileName = patient.getPatientIdentifier().getIdentifier() + ".mp3";
+            fileStorageService.create(filePath);
 
-				fileStorageService.create(fileName);
+            dao.saveOrUpdateLegalConsent(new LegalConsent(patient, filePath));
 
-				saveToDatabase(fileName, patient);
-			}
-			return fileName;
-		} catch (Exception e) {
-			throw new StorageException("Failed to store file.", e);
-		}
-	}
+            return filePath;
+        } catch (Exception e) {
+            throw new StorageException("Failed to store file.", e);
+        }
+    }
 
-	private void saveToDatabase(String fileName, Patient patient) {
-		LegalConsent exist = dao.getLegalConsentByFilePath(fileName);
-		if (exist == null) {
-			exist = new LegalConsent();
-		}
-		exist.setFilePath(fileName);
-		exist.setPatient(patient);
-		dao.saveLegalConsent(exist);
-	}
-
-	private Patient getPatient(LegalConsentRequest legalConsentRequest) {
-		patientService = Context.getPatientService();
-		Patient patient = null;
-		List<Patient> list = patientService.getPatients(legalConsentRequest.getPatientIdentifier());
-		if (list != null && !list.isEmpty())
-			patient = list.get(0);
-		return patient;
-	}
-
-	/**
-	 * Injected in moduleApplicationContext.xml
-	 */
-	public void setDao(BlopupfileuploadmoduleDao dao) {
-		this.dao = dao;
-	}
-	
-	/**
-	 * Injected in moduleApplicationContext.xml
-	 */
-	public void setPatientService(PatientService patientService) {
-		this.patientService = patientService;
-	}
-	
-	@Override
-	public LegalConsent getLegalConsentByUuid(String uuid) throws APIException {
-		return dao.getLegalConsentByUuid(uuid);
-	}
-	
-	@Override
-	public LegalConsent saveLegalConsent(@NotNull LegalConsent legalConsent) throws APIException {
-		return dao.saveLegalConsent(legalConsent);
-	}
+    /**
+     * Injected in moduleApplicationContext.xml
+     */
+    public void setDao(BlopupfileuploadmoduleDao dao) {
+        this.dao = dao;
+    }
 }

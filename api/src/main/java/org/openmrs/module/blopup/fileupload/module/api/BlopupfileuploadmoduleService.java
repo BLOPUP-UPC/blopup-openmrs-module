@@ -24,28 +24,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface BlopupfileuploadmoduleService extends OpenmrsService {
 	
 	String store(LegalConsentRequest legalConsentRequest);
-	
-	/**
-	 * Returns an item by uuid. It can be called by any authenticated user. It is fetched in read
-	 * only transaction.
-	 * 
-	 * @param uuid
-	 * @return
-	 * @throws APIException
-	 */
-	@Authorized()
-	@Transactional(readOnly = true)
-	LegalConsent getLegalConsentByUuid(String uuid) throws APIException;
-	
-	/**
-	 * Saves an item. Sets the owner to superuser, if it is not set. It can be called by users with
-	 * this module's privilege. It is executed in a transaction.
-	 * 
-	 * @param legalConsent
-	 * @return
-	 * @throws APIException
-	 */
-	@Authorized(BlopupfileuploadmoduleConfig.MODULE_PRIVILEGE)
-	@Transactional
-	LegalConsent saveLegalConsent(LegalConsent legalConsent) throws APIException;
+
 }

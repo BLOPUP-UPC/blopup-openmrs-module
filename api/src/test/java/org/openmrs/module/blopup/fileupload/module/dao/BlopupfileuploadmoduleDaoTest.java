@@ -43,14 +43,13 @@ public class BlopupfileuploadmoduleDaoTest extends BaseModuleContextSensitiveTes
 		legalConsent.setPatient(patientService.getPatientByUuid("43e633de-4986-42a0-a7f5-673f5dcba078"));
 		
 		//When
-		dao.saveLegalConsent(legalConsent);
+		dao.saveOrUpdateLegalConsent(legalConsent);
 		
-		//Let's clean up the cache to be sure getLegalConsentByUuid fetches from DB and not from cache
 		Context.flushSession();
 		Context.clearSession();
 		
 		//Then
-		LegalConsent savedLegalConsent = dao.getLegalConsentByUuid(legalConsent.getUuid());
+		LegalConsent savedLegalConsent = dao.getLegalConsentByFilePath(legalConsent.getFilePath());
 		
 		assertThat(savedLegalConsent, hasProperty("uuid", is(legalConsent.getUuid())));
 		assertThat(savedLegalConsent, hasProperty("patient", is(legalConsent.getPatient())));

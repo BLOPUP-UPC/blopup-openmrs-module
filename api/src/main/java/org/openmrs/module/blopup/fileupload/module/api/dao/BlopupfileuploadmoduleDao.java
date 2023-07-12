@@ -10,6 +10,7 @@
 package org.openmrs.module.blopup.fileupload.module.api.dao;
 
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.Patient;
 import org.openmrs.api.db.hibernate.DbSession;
 import org.openmrs.api.db.hibernate.DbSessionFactory;
 import org.openmrs.module.blopup.fileupload.module.LegalConsent;
@@ -18,26 +19,28 @@ import org.springframework.stereotype.Repository;
 
 @Repository("blopup.fileupload.module.BlopupfileuploadmoduleDao")
 public class BlopupfileuploadmoduleDao {
-	
-	@Autowired
-	DbSessionFactory sessionFactory;
-	
-	private DbSession getSession() {
-		return sessionFactory.getCurrentSession();
-	}
-	
-	public LegalConsent getLegalConsentByUuid(String uuid) {
-		return (LegalConsent) getSession().createCriteria(LegalConsent.class).add(Restrictions.eq("uuid", uuid))
-		        .uniqueResult();
-	}
-	
-	public LegalConsent getLegalConsentByFilePath(String filePath) {
-		return (LegalConsent) getSession().createCriteria(LegalConsent.class).add(Restrictions.eq("filePath", filePath))
-		        .uniqueResult();
-	}
-	
-	public LegalConsent saveLegalConsent(LegalConsent legalConsent) {
-		getSession().saveOrUpdate(legalConsent);
-		return legalConsent;
-	}
+
+    @Autowired
+    DbSessionFactory sessionFactory;
+
+    private DbSession getSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
+    public LegalConsent getLegalConsentByFilePath(String filePath) {
+        return (LegalConsent) getSession().createCriteria(LegalConsent.class).add(Restrictions.eq("filePath", filePath))
+                .uniqueResult();
+    }
+
+    public LegalConsent saveOrUpdateLegalConsent(LegalConsent legalConsent) {
+        LegalConsent savedLegalConsent = getLegalConsentByFilePath(legalConsent.getFilePath());
+        if (savedLegalConsent == null) {
+            savedLegalConsent = new LegalConsent();
+        }
+        savedLegalConsent.setFilePath(legalConsent.getFilePath());
+        savedLegalConsent.setPatient(legalConsent.getPatient());
+
+        getSession().saveOrUpdate(savedLegalConsent);
+        return savedLegalConsent;
+    }
 }

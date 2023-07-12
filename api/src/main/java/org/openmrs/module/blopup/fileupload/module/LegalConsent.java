@@ -40,7 +40,15 @@ public class LegalConsent {
 	@Basic
 	@Column(name = "file_path", length = 500)
 	private String filePath;
-	
+
+	public LegalConsent() {
+	}
+
+	public LegalConsent(Patient patient, String filePath) {
+		this.patient = patient;
+		this.filePath = filePath;
+	}
+
 	public Integer getId() {
 		return id;
 	}
