@@ -10,7 +10,6 @@
 package org.openmrs.module.blopup.fileupload.module.api.dao;
 
 import org.hibernate.criterion.Restrictions;
-import org.openmrs.Patient;
 import org.openmrs.api.db.hibernate.DbSession;
 import org.openmrs.api.db.hibernate.DbSessionFactory;
 import org.openmrs.module.blopup.fileupload.module.LegalConsent;

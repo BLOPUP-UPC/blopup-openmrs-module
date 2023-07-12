@@ -14,7 +14,7 @@ import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.module.blopup.fileupload.module.api.BlopupfileuploadmoduleService;
+import org.openmrs.module.blopup.fileupload.module.api.BlopupFileUploadModuleService;
 import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageException;
 import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
 import org.openmrs.module.webservices.rest.web.RestConstants;
@@ -39,19 +39,19 @@ public class FileUploadController extends BaseRestController {
 	 */
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private final BlopupfileuploadmoduleService storageService;
+	private final BlopupFileUploadModuleService storageService;
 	
 	private final Bucket bucket;
 	
 	@Autowired
-	public FileUploadController(BlopupfileuploadmoduleService storageService) {
+	public FileUploadController(BlopupFileUploadModuleService storageService) {
 		this.storageService = storageService;
 		
 		Bandwidth limit = Bandwidth.classic(3, Refill.greedy(3, Duration.ofMinutes(1)));
 		bucket = Bucket.builder().addLimit(limit).build();
 	}
 
-	public FileUploadController(BlopupfileuploadmoduleService storageService, Bucket bucket) {
+	public FileUploadController(BlopupFileUploadModuleService storageService, Bucket bucket) {
 		this.storageService = storageService;
 		this.bucket = bucket;
 	}
@@ -68,7 +68,7 @@ public class FileUploadController extends BaseRestController {
 			if(legalConsentRequest.getPatientIdentifier() == null || legalConsentRequest.getPatientIdentifier().isEmpty()){
 				return new ResponseEntity("Patient identifier cannot be empty or null!", HttpStatus.BAD_REQUEST);
 			}
-			String fileName = storageService.store(legalConsentRequest);
+			String fileName = storageService.saveLegalConsentRecording(legalConsentRequest);
 
 			return new ResponseEntity("You have successfully uploaded " + fileName + "!", HttpStatus.OK);
 		}

@@ -15,7 +15,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.blopup.fileupload.module.FileStorageService;
 import org.openmrs.module.blopup.fileupload.module.LegalConsent;
-import org.openmrs.module.blopup.fileupload.module.api.BlopupfileuploadmoduleService;
+import org.openmrs.module.blopup.fileupload.module.api.BlopupFileUploadModuleService;
 import org.openmrs.module.blopup.fileupload.module.api.dao.BlopupfileuploadmoduleDao;
 import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageException;
 import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
@@ -24,36 +24,31 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implements BlopupfileuploadmoduleService {
+public class BlopulFileUploadModuleServiceImpl extends BaseOpenmrsService implements BlopupFileUploadModuleService {
 
     BlopupfileuploadmoduleDao dao;
 
     PatientService patientService;
 
     @Override
-    public String store(LegalConsentRequest legalConsentRequest) {
-
-        FileStorageService fileStorageService = new FileStorageService();
-
-        String fileString = legalConsentRequest.getFileByteString();
+    public String saveLegalConsentRecording(LegalConsentRequest legalConsentRequest) {
+        String fileByteString = legalConsentRequest.getFileByteString();
+        String filePath = legalConsentRequest.getPatientIdentifier()+ ".mp3";
 
         try {
-            fileStorageService.convertToByteArray(fileString);
-
-            fileStorageService.createRecordingDirectory();
-
             patientService = Context.getPatientService();
             List<Patient> patients = patientService.getPatients(legalConsentRequest.getPatientIdentifier());
 
-            if (patients == null || patients.isEmpty())
+            if (patients == null || patients.isEmpty()) {
                 throw new StorageException("Failed to store file. Patient not found");
+            }
 
-            Patient patient = patients.get(0);
-            String filePath = patient.getPatientIdentifier().getIdentifier() + ".mp3";
-
+            FileStorageService fileStorageService = new FileStorageService();
+            fileStorageService.saveRecording(fileByteString);
+            fileStorageService.createRecordingDirectory();
             fileStorageService.create(filePath);
 
-            dao.saveOrUpdateLegalConsent(new LegalConsent(patient, filePath));
+            dao.saveOrUpdateLegalConsent(new LegalConsent(patients.get(0), filePath));
 
             return filePath;
         } catch (Exception e) {

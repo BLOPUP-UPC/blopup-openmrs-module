@@ -6,8 +6,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageException;
-import org.openmrs.module.blopup.fileupload.module.api.impl.BlopupfileuploadmoduleServiceImpl;
+import org.openmrs.module.blopup.fileupload.module.api.impl.BlopulFileUploadModuleServiceImpl;
 import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class FileUploadControllerTest {
     private FileUploadController fileUploadController;
 
     @Mock
-    BlopupfileuploadmoduleServiceImpl basicModuleService;
+    BlopulFileUploadModuleServiceImpl basicModuleService;
 
     @Before
     public void setUp() {
@@ -38,7 +37,7 @@ public class FileUploadControllerTest {
     @Test
     public void shouldSaveUploadedFile() {
 
-        Mockito.when(basicModuleService.store(legalConsentRequest)).thenReturn("blopup.mp3");
+        Mockito.when(basicModuleService.saveLegalConsentRecording(legalConsentRequest)).thenReturn("blopup.mp3");
 
         ResponseEntity response = fileUploadController.handleFileUpload(legalConsentRequest);
         assert (response.getStatusCode().equals(HttpStatus.OK));

@@ -9,20 +9,15 @@
  */
 package org.openmrs.module.blopup.fileupload.module.api;
 
-import org.openmrs.annotation.Authorized;
-import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.blopup.fileupload.module.BlopupfileuploadmoduleConfig;
-import org.openmrs.module.blopup.fileupload.module.LegalConsent;
 import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The main service of this module, which is exposed for other modules. See
  * moduleApplicationContext.xml on how it is wired up.
  */
-public interface BlopupfileuploadmoduleService extends OpenmrsService {
+public interface BlopupFileUploadModuleService extends OpenmrsService {
 	
-	String store(LegalConsentRequest legalConsentRequest);
+	String saveLegalConsentRecording(LegalConsentRequest legalConsentRequest);
 
 }
