@@ -32,7 +32,6 @@ public class BlopulFileUploadModuleServiceImpl extends BaseOpenmrsService implem
 
     @Override
     public String saveLegalConsentRecording(LegalConsentRequest legalConsentRequest) {
-        String fileByteString = legalConsentRequest.getFileByteString();
         String filePath = legalConsentRequest.getPatientIdentifier()+ ".mp3";
 
         try {
@@ -44,9 +43,7 @@ public class BlopulFileUploadModuleServiceImpl extends BaseOpenmrsService implem
             }
 
             FileStorageService fileStorageService = new FileStorageService();
-            fileStorageService.convertToByteArray(fileByteString);
-            fileStorageService.createRecordingDirectory();
-            fileStorageService.create(filePath);
+            fileStorageService.saveRecordingFile(legalConsentRequest);
 
             dao.saveOrUpdateLegalConsent(new LegalConsent(patients.get(0), filePath));
 

@@ -1,6 +1,7 @@
 package org.openmrs.module.blopup.fileupload.module;
 
 import org.apache.commons.io.FileUtils;
+import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
 import sun.misc.BASE64Decoder;
 
 import java.io.File;
@@ -9,25 +10,29 @@ import java.io.IOException;
 
 
 public class FileStorageService {
-    private byte[] decodedBytes;
 
-    public void convertToByteArray(String fileString) throws IOException {
-        BASE64Decoder decoder = new BASE64Decoder();
-        decodedBytes = decoder.decodeBuffer(fileString);
+    File RECORDING_DIRECTORY = new File("../../../opt/app/legalConsentStore");
+
+    public void saveRecordingFile(LegalConsentRequest legalConsentRequest) throws IOException {
+        byte[] byteArray = convertToByteArray(legalConsentRequest.getFileByteString());
+        createRecordingDirectory();
+        saveFile(legalConsentRequest.getPatientIdentifier() + ".mp3", byteArray);
     }
 
-    File recordingDir = new File("../../../opt/app/legalConsentStore");
+    private byte[] convertToByteArray(String fileString) throws IOException {
+        BASE64Decoder decoder = new BASE64Decoder();
+        return decoder.decodeBuffer(fileString);
+    }
 
-    public void createRecordingDirectory() throws IOException {
-        if(!recordingDir.exists()){
-            FileUtils.forceMkdir(recordingDir);
+    private void createRecordingDirectory() throws IOException {
+        if(!RECORDING_DIRECTORY.exists()){
+            FileUtils.forceMkdir(RECORDING_DIRECTORY);
             }
     }
 
-    public void create (String fileName) throws IOException {
-        FileOutputStream fos = new FileOutputStream(recordingDir + "/" + fileName);
+    private void saveFile(String fileName, byte[] decodedBytes) throws IOException {
+        FileOutputStream fos = new FileOutputStream(RECORDING_DIRECTORY + "/" + fileName);
         fos.write(decodedBytes);
         fos.close();
     }
-
 }
