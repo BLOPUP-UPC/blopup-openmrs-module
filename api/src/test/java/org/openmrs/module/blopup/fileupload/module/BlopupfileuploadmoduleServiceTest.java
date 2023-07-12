@@ -19,10 +19,10 @@ import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.blopup.fileupload.module.api.BlopupFileUploadModuleService;
+import org.openmrs.module.blopup.fileupload.module.api.BlopupfileuploadmoduleService;
 import org.openmrs.module.blopup.fileupload.module.api.dao.BlopupfileuploadmoduleDao;
 import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageException;
-import org.openmrs.module.blopup.fileupload.module.api.impl.BlopulFileUploadModuleServiceImpl;
+import org.openmrs.module.blopup.fileupload.module.api.impl.BlopupfileuploadmoduleServiceImpl;
 import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -38,62 +38,61 @@ import static org.mockito.Mockito.*;
  * BaseModuleContextSensitiveTest, thus it is run without the in-memory DB and Spring context.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({BlopupFileUploadModuleService.class, Context.class})
+@PrepareForTest({ BlopupfileuploadmoduleService.class, Context.class })
 public class BlopupfileuploadmoduleServiceTest {
-
+	
 	public static final String VALID_PATIENT_IDENTIFIER = "8FGPT";
+	
 	@Mock
 	private BlopupfileuploadmoduleDao dao;
-
+	
 	@Mock
 	private PatientService patientService;
-
+	
 	@InjectMocks
-	BlopulFileUploadModuleServiceImpl blopupfileuploadmoduleService;
-
-
+	BlopupfileuploadmoduleServiceImpl blopupfileuploadmoduleService;
+	
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 	}
-
+	
 	@Test
-	public void shouldSaveFile(){
+	public void shouldSaveFile() {
 		LegalConsentRequest legalConsentRequest = new LegalConsentRequest();
 		legalConsentRequest.setPatientIdentifier(VALID_PATIENT_IDENTIFIER);
 		legalConsentRequest.setFileByteString("File");
-
-
+		
 		PowerMockito.mockStatic(Context.class);
 		PowerMockito.when(Context.getPatientService()).thenReturn(patientService);
-
+		
 		ArrayList<Patient> patients = validPatientFixture();
-
+		
 		when(patientService.getPatients(VALID_PATIENT_IDENTIFIER)).thenReturn(patients);
-		when(dao.getLegalConsentByFilePath( VALID_PATIENT_IDENTIFIER + ".mp3")).thenReturn(new LegalConsent());
-
+		when(dao.getLegalConsentByFilePath(VALID_PATIENT_IDENTIFIER + ".mp3")).thenReturn(new LegalConsent());
+		
 		String response = blopupfileuploadmoduleService.saveLegalConsentRecording(legalConsentRequest);
-
-		assert(response.equals( VALID_PATIENT_IDENTIFIER + ".mp3"));
+		
+		assert (response.equals(VALID_PATIENT_IDENTIFIER + ".mp3"));
 	}
-
-	@Test (expected = StorageException.class)
-	public void shouldNotSaveFileIfPatientDoesNotExist(){
+	
+	@Test(expected = StorageException.class)
+	public void shouldNotSaveFileIfPatientDoesNotExist() {
 		LegalConsentRequest legalConsentRequest = new LegalConsentRequest();
 		legalConsentRequest.setPatientIdentifier("INVALID");
 		legalConsentRequest.setFileByteString("File");
-
+		
 		String fileName = "INVALID" + ".mp3";
-
+		
 		PowerMockito.mockStatic(Context.class);
 		PowerMockito.when(Context.getPatientService()).thenReturn(patientService);
-
+		
 		when(patientService.getPatients(any())).thenReturn(null);
 		when(dao.getLegalConsentByFilePath(fileName)).thenReturn(new LegalConsent());
-
+		
 		blopupfileuploadmoduleService.saveLegalConsentRecording(legalConsentRequest);
 	}
-
+	
 	private ArrayList<Patient> validPatientFixture() {
 		Patient patient = new Patient();
 		PatientIdentifier patientIdentifier = new PatientIdentifier();

@@ -16,8 +16,8 @@ import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentReques
  * The main service of this module, which is exposed for other modules. See
  * moduleApplicationContext.xml on how it is wired up.
  */
-public interface BlopupFileUploadModuleService extends OpenmrsService {
+public interface BlopupfileuploadmoduleService extends OpenmrsService {
 	
 	String saveLegalConsentRecording(LegalConsentRequest legalConsentRequest);
-
+	
 }
