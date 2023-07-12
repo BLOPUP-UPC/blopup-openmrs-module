@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageException;
 import org.openmrs.module.blopup.fileupload.module.api.impl.BlopulFileUploadModuleServiceImpl;
 import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
 import org.springframework.http.HttpStatus;
@@ -95,7 +96,6 @@ public class FileUploadControllerTest {
 
     @Test
     public void shouldRespondWith404IfPatientDoesNotExist(){
-
     }
 
     @Test

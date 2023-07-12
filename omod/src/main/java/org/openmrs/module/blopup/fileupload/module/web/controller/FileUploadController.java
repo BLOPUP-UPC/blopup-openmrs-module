@@ -78,7 +78,9 @@ public class FileUploadController extends BaseRestController {
 	@ExceptionHandler(StorageException.class)
 	public ResponseEntity<?> handleStorageException(StorageException exc) {
 		log.error(exc.getMessage(), exc);
-		return new ResponseEntity(exc.getMessage(), HttpStatus.BAD_REQUEST);
+		if(exc.getMessage().contains("Patient")){
+			return new ResponseEntity(exc.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity(exc.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
 }
