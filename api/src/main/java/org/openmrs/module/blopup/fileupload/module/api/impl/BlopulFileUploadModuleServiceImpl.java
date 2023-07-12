@@ -44,7 +44,7 @@ public class BlopulFileUploadModuleServiceImpl extends BaseOpenmrsService implem
             }
 
             FileStorageService fileStorageService = new FileStorageService();
-            fileStorageService.saveRecording(fileByteString);
+            fileStorageService.convertToByteArray(fileByteString);
             fileStorageService.createRecordingDirectory();
             fileStorageService.create(filePath);
 

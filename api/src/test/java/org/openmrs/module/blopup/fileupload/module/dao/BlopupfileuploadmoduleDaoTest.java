@@ -9,7 +9,6 @@
  */
 package org.openmrs.module.blopup.fileupload.module.dao;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
@@ -51,7 +50,7 @@ public class BlopupfileuploadmoduleDaoTest extends BaseModuleContextSensitiveTes
 		//Then
 		LegalConsent savedLegalConsent = dao.getLegalConsentByFilePath(legalConsent.getFilePath());
 		
-		assertThat(savedLegalConsent, hasProperty("uuid", is(legalConsent.getUuid())));
+		assertThat(savedLegalConsent, hasProperty("id", is(legalConsent.getId())));
 		assertThat(savedLegalConsent, hasProperty("patient", is(legalConsent.getPatient())));
 		assertThat(savedLegalConsent, hasProperty("filePath", is(legalConsent.getFilePath())));
 	}

@@ -30,9 +30,6 @@ public class LegalConsent {
 	@Column(name = "blopup_legal_consent_id")
 	private Integer id;
 	
-	@Column(name = "uuid", unique = true, nullable = false, length = 38)
-	private String uuid = UUID.randomUUID().toString();
-	
 	@OneToOne
 	@JoinColumn(name = "patient")
 	private Patient patient;
@@ -48,23 +45,11 @@ public class LegalConsent {
 		this.patient = patient;
 		this.filePath = filePath;
 	}
-
+	
 	public Integer getId() {
 		return id;
 	}
-	
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
-	public String getUuid() {
-		return uuid;
-	}
-	
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-	
+
 	public Patient getPatient() {
 		return patient;
 	}
