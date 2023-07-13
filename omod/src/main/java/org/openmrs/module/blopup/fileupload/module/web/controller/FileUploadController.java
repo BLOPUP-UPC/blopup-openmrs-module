@@ -62,8 +62,11 @@ public class FileUploadController extends BaseRestController {
 			if (legalConsentRequest == null) {
 				return new ResponseEntity("Body cannot be null!", HttpStatus.BAD_REQUEST);
 			}
-			if (legalConsentRequest.getFileByteString() == null || legalConsentRequest.getFileByteString().isEmpty() ||legalConsentRequest.getPatientIdentifier() == null || legalConsentRequest.getPatientIdentifier().isEmpty()) {
-				return new ResponseEntity("Patient identifier and file cannot be empty or null!", HttpStatus.BAD_REQUEST);
+			if (legalConsentRequest.getFileByteString() == null || legalConsentRequest.getFileByteString().isEmpty()) {
+				return new ResponseEntity("File cannot be empty or null!", HttpStatus.BAD_REQUEST);
+			}
+			if (legalConsentRequest.getPatientIdentifier() == null || legalConsentRequest.getPatientIdentifier().isEmpty()) {
+				return new ResponseEntity("Patient identifier cannot be empty or null!", HttpStatus.BAD_REQUEST);
 			}
 			String fileName = storageService.saveLegalConsentRecording(legalConsentRequest);
 			

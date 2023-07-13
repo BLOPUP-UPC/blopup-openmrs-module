@@ -50,7 +50,7 @@ public class FileUploadControllerTest {
 		
 		ResponseEntity response = fileUploadController.handleFileUpload(legalConsentRequest);
 		assert (response.getStatusCode().equals(HttpStatus.BAD_REQUEST));
-		assert (Objects.equals(response.getBody(), "Patient identifier and file cannot be empty or null!"));
+		assert (Objects.equals(response.getBody(), "File cannot be empty or null!"));
 		
 	}
 	
@@ -60,7 +60,7 @@ public class FileUploadControllerTest {
 		
 		ResponseEntity response = fileUploadController.handleFileUpload(legalConsentRequest);
 		assert (response.getStatusCode().equals(HttpStatus.BAD_REQUEST));
-		assert (Objects.equals(response.getBody(), "Patient identifier and file cannot be empty or null!"));
+		assert (Objects.equals(response.getBody(), "File cannot be empty or null!"));
 	}
 	
 	@Test
@@ -69,7 +69,7 @@ public class FileUploadControllerTest {
 		
 		ResponseEntity response = fileUploadController.handleFileUpload(legalConsentRequest);
 		assert (response.getStatusCode().equals(HttpStatus.BAD_REQUEST));
-		assert (Objects.equals(response.getBody(), "Patient identifier and file cannot be empty or null!"));
+		assert (Objects.equals(response.getBody(), "Patient identifier cannot be empty or null!"));
 	}
 	
 	@Test
@@ -78,7 +78,7 @@ public class FileUploadControllerTest {
 		
 		ResponseEntity response = fileUploadController.handleFileUpload(legalConsentRequest);
 		assert (response.getStatusCode().equals(HttpStatus.BAD_REQUEST));
-		assert (Objects.equals(response.getBody(), "Patient identifier and file cannot be empty or null!"));
+		assert (Objects.equals(response.getBody(), "Patient identifier cannot be empty or null!"));
 	}
 	
 	@Test
