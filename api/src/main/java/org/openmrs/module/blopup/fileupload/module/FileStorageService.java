@@ -2,12 +2,14 @@ package org.openmrs.module.blopup.fileupload.module;
 
 import org.apache.commons.io.FileUtils;
 import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
+import org.springframework.stereotype.Component;
 import sun.misc.BASE64Decoder;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+@Component("blopup.fileupload.module.FileStorageService")
 public class FileStorageService {
 	
 	File RECORDING_DIRECTORY = new File("../../../opt/app/legalConsentStore");

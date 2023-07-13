@@ -19,8 +19,10 @@ import org.openmrs.module.blopup.fileupload.module.api.BlopupfileuploadmoduleSer
 import org.openmrs.module.blopup.fileupload.module.api.dao.BlopupfileuploadmoduleDao;
 import org.openmrs.module.blopup.fileupload.module.api.exceptions.StorageException;
 import org.openmrs.module.blopup.fileupload.module.api.models.LegalConsentRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.List;
 
 @Transactional
@@ -28,28 +30,30 @@ public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implem
 	
 	BlopupfileuploadmoduleDao dao;
 	
+	FileStorageService fileStorageService;
+	
 	PatientService patientService;
 	
 	@Override
 	public String saveLegalConsentRecording(LegalConsentRequest legalConsentRequest) {
 		String filePath = legalConsentRequest.getPatientIdentifier() + ".mp3";
-		
+
 		try {
 			patientService = Context.getPatientService();
 			List<Patient> patients = patientService.getPatients(legalConsentRequest.getPatientIdentifier());
-			
+
 			if (patients == null || patients.isEmpty()) {
 				throw new StorageException("Failed to store file. Patient not found");
 			}
-			
-			FileStorageService fileStorageService = new FileStorageService();
+
 			fileStorageService.saveRecordingFile(legalConsentRequest);
-			
+
 			dao.saveOrUpdateLegalConsent(new LegalConsent(patients.get(0), filePath));
-			
+
 			return filePath;
-		}
-		catch (Exception e) {
+		} catch (StorageException e) {
+			throw e;
+		} catch (Exception e) {
 			throw new StorageException("Failed to store file.", e);
 		}
 	}
@@ -59,5 +63,9 @@ public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implem
 	 */
 	public void setDao(BlopupfileuploadmoduleDao dao) {
 		this.dao = dao;
+	}
+	
+	public void setFileStorageService(FileStorageService fileStorageService) {
+		this.fileStorageService = fileStorageService;
 	}
 }

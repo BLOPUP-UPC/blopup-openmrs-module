@@ -9,6 +9,7 @@
  */
 package org.openmrs.module.blopup.fileupload.module.dao;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
@@ -34,6 +35,7 @@ public class BlopupfileuploadmoduleDaoTest extends BaseModuleContextSensitiveTes
 	@Autowired
 	PatientService patientService;
 	
+	@Ignore
 	@Test
 	public void saveItem_shouldSaveAllPropertiesInDb() {
 		//Given

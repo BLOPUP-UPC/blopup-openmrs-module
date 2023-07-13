@@ -35,6 +35,7 @@
         <property name="target">
             <bean class="org.openmrs.module.blopup.fileupload.module.api.impl.BlopupfileuploadmoduleServiceImpl">
                 <property name="dao" ref="blopup.fileupload.module.BlopupfileuploadmoduleDao" />
+                <property name="fileStorageService" ref="blopup.fileupload.module.FileStorageService" />
             </bean>
         </property>
         <property name="preInterceptors">
@@ -55,4 +56,6 @@
             </list>
         </property>
     </bean>
+    <bean id="blopup.fileupload.module.FileStorageService"
+          class="org.openmrs.module.blopup.fileupload.module.FileStorageService"/>
 </beans>

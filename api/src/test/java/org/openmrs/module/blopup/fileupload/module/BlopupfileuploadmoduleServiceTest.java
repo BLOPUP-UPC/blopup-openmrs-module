@@ -28,10 +28,13 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 /**
  * This is a unit test, which verifies logic in BlopupfileuploadmoduleService. It doesn't extend
@@ -45,6 +48,9 @@ public class BlopupfileuploadmoduleServiceTest {
 	
 	@Mock
 	private BlopupfileuploadmoduleDao dao;
+	
+	@Mock
+	private FileStorageService fileStorageService;
 	
 	@Mock
 	private PatientService patientService;
@@ -62,6 +68,8 @@ public class BlopupfileuploadmoduleServiceTest {
 		LegalConsentRequest legalConsentRequest = new LegalConsentRequest();
 		legalConsentRequest.setPatientIdentifier(VALID_PATIENT_IDENTIFIER);
 		legalConsentRequest.setFileByteString("File");
+		
+		blopupfileuploadmoduleService.setFileStorageService(fileStorageService);
 		
 		PowerMockito.mockStatic(Context.class);
 		PowerMockito.when(Context.getPatientService()).thenReturn(patientService);
