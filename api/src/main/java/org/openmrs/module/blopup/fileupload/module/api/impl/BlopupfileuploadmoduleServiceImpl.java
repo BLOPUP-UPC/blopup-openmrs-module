@@ -37,23 +37,25 @@ public class BlopupfileuploadmoduleServiceImpl extends BaseOpenmrsService implem
 	@Override
 	public String saveLegalConsentRecording(LegalConsentRequest legalConsentRequest) {
 		String filePath = legalConsentRequest.getPatientIdentifier() + ".mp3";
-
+		
 		try {
 			patientService = Context.getPatientService();
 			List<Patient> patients = patientService.getPatients(legalConsentRequest.getPatientIdentifier());
-
+			
 			if (patients == null || patients.isEmpty()) {
 				throw new StorageException("Failed to store file. Patient not found");
 			}
-
+			
 			fileStorageService.saveRecordingFile(legalConsentRequest);
-
+			
 			dao.saveOrUpdateLegalConsent(new LegalConsent(patients.get(0), filePath));
-
+			
 			return filePath;
-		} catch (StorageException e) {
+		}
+		catch (StorageException e) {
 			throw e;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new StorageException("Failed to store file.", e);
 		}
 	}
