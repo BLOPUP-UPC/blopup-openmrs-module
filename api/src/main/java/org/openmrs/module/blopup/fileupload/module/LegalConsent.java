@@ -29,10 +29,10 @@ public class LegalConsent {
 	@GeneratedValue
 	@Column(name = "blopup_legal_consent_id")
 	private Integer id;
-
+	
 	@Column(name = "uuid", unique = true, nullable = false, length = 38)
 	private String uuid = UUID.randomUUID().toString();
-
+	
 	@OneToOne
 	@JoinColumn(name = "patient")
 	private Patient patient;
