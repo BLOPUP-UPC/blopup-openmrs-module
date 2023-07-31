@@ -7,12 +7,8 @@ on: push
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
+    permissions: write-all
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 8
@@ -20,8 +16,16 @@ jobs:
       with:
         java-version: '8'
         distribution: 'zulu'
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
+        cache: maven
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        release_name: Release Test
+        tag_name: Test
