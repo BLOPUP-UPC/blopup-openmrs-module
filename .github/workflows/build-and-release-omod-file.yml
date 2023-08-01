@@ -23,12 +23,6 @@ jobs:
     - name: Create New Release
       id: create_release
       uses: ncipollo/release-action@v1
-    - name: Add OMOD file to Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: /home/runner/work/blopup-file-upload-module/blopup-file-upload-module/omod/target/blopup.fileupload.module-1.0.0.omod
-        asset_name: omod-1.0-SNAPSHOT.omod
-        asset_content_type: application/zip
+        artifacts: |
+          /home/runner/work/blopup-file-upload-module/blopup-file-upload-module/omod/target/blopup.fileupload.module-1.0.0.omod
