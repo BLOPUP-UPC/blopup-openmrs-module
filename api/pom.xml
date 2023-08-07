@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>blopup.fileupload.module</groupId>
-		<artifactId>blopup.fileupload.module</artifactId>
+		<groupId>blopup.fileupload</groupId>
+		<artifactId>blopup.fileupload</artifactId>
 		<version>1.0.0</version>
 	</parent>
 
