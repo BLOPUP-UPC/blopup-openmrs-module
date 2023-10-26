@@ -18,10 +18,10 @@ jobs:
         java-version: '8'
         distribution: 'zulu'
         cache: maven
-    - name: Execute tests
-      run: mvn test
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+    - name: Execute tests
+      run: mvn test
     - name: Create New Release
       id: create_release
       uses: ncipollo/release-action@v1
