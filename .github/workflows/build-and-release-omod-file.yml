@@ -21,11 +21,11 @@ jobs:
     - name: Execute tests
       run: mvn test
     - name: Build with Maven
-      run: mvn -B package --file pom.xml |
-          echo "version_number=$(yq '.project.version' pom.xml)" >> $GITHUB_ENV
+      id: build
+      run: mvn -B package --file pom.xml |    
+          echo "artifact_path=/home/runner/work/blopup-file-upload-module/blopup-file-upload-module/omod/target/blopup.fileupload-"$(yq '.project.version' pom.xml)".omod" >> $GITHUB_OUTPUT
     - name: Create New Release
       id: create_release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: |
-          /home/runner/work/blopup-file-upload-module/blopup-file-upload-module/omod/target/blopup.fileupload-${version_number}.omod
+        artifacts: ${{ steps.build.outputs.artifact_path }}
