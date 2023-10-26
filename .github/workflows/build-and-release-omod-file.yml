@@ -18,6 +18,8 @@ jobs:
         java-version: '8'
         distribution: 'zulu'
         cache: maven
+    - name: Execute tests
+      run: mvn test
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Create New Release
