@@ -10,11 +10,11 @@ To add a new version of the medule to OpenMRS, you will need to first release th
 
 **1. Increase the version number for the OMOD file in all `pom.xml` files.**
 
-- root pom.xml
+- root pom.xml project version
 
-- omod/pom.xml
+- omod/pom.xml parent version
 
-- api/pom.xml
+- api/pom.xml parent version
    
 **2. Add a tag to the commit you want to publish.**
   
