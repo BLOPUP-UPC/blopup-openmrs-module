@@ -8,7 +8,7 @@ This is a custom OpenMRS module to upload the recordings of the patients' legal 
 
 To add a new version of the medule to OpenMRS, you will need to first release the module OMOD file.
 
-**1. Increase the version number for the OMOD file in all `pom.xml` files.**
+**1. Increase the version number for the project in all `pom.xml` files.**
 
 - root pom.xml project version
 
