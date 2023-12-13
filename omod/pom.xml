@@ -14,9 +14,9 @@
 
 	<dependencies>
         <dependency>
-            <groupId>blopup.fileupload.module</groupId>
+            <groupId>blopup.fileupload</groupId>
             <artifactId>blopup.fileupload.module-api</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 		<dependency>
 			<groupId>org.openmrs.web</groupId>
