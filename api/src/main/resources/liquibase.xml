@@ -14,7 +14,6 @@
     -->
 
     <!-- Uncomment the changeset below if you want to make the Legal Consent class persistable, see also Item and BlopupfileuploadmoduleDaoTest -->
-
     <changeSet id="blopup.fileupload.module-2023-06-07-16-32" author="raff">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -39,26 +38,10 @@
                                  referencedTableName="patient"
                                  referencedColumnNames="patient_id"/>
     </changeSet>
-
     <changeSet id="treatment_concepts_id" author="blopup">
-        <preConditions onFail="CONTINUE">
-            <sqlCheck expectedResult="1">
-                SELECT COUNT(1)
-                FROM concept
-                WHERE uuid = '43f8a8f3-6cf9-4a1f-bba5-8ec979f6d0b6'
-            </sqlCheck>
-        </preConditions>
         <comment>
             Creating concepts id for treatment
         </comment>
-        <insert tableName="concept">
-            <column name="uuid" value="43f8a8f3-6cf9-4a1f-bba5-8ec979f6d0b6"/>
-        </insert>
-        <insert tableName="concept_name">
-            <column name="name" value="Medication Name"/>
-            <column name="locale" value="en"/>
-            <column name="concept_id" value="(SELECT concept_id FROM concept WHERE uuid = MEDICATION_NAME_CONCEPT_ID)"/>
-        </insert>
+        <sqlFile path="treatment_concepts_and_concept_names.sql"/>
     </changeSet>
-
 </databaseChangeLog>
