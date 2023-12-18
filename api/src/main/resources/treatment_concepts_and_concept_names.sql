@@ -80,7 +80,7 @@ VALUES ('Beta Blocker', 'en', '1', 'FULLY_SPECIFIED', '1', NOW(), '0bb104e6-c1bb
          WHERE uuid = 'f2c7ec86-6fe0-4e6a-bfe9-c73380228177'));
 
 INSERT INTO concept (description,datatype_id,class_id,creator,date_created,uuid)
-VALUES ('ARA II', '10', '4', '1', NOW(), '87e51329-cc96-426d-9b1d-2b0b2d5e9c6e');
+VALUES ('ARA II', '10', '4', '1', NOW(), '87e51329-cc96-426d-bc71-ccef8892ce71');
 
 INSERT INTO concept_name (name, locale, locale_preferred, concept_name_type, creator, date_created, uuid, concept_id)
 VALUES ('ARA II', 'en', '1', 'FULLY_SPECIFIED', '1', NOW(), '0bb104e6-c1bb-4896-ae34-f594eae57102',
