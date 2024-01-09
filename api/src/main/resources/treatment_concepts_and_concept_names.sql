@@ -35,7 +35,7 @@ VALUES ('Treatment Notes', 'en', '1', 'FULLY_SPECIFIED', '1', NOW(), '0bb104e6-c
          WHERE uuid = 'dfa881a4-5c88-4057-958b-f583c8edbdef'));
 
 INSERT INTO concept (description,datatype_id,class_id,creator,date_created,uuid)
-VALUES ('Medication Type', '3', '4', '1', NOW(), '1a8f49cc-488b-4788-adb3-72c499108772');
+VALUES ('Medication Type', '2', '4', '1', NOW(), '1a8f49cc-488b-4788-adb3-72c499108772');
 
 INSERT INTO concept_name (name, locale, locale_preferred, concept_name_type, creator, date_created, uuid, concept_id)
 VALUES ('Medication Type', 'en', '1', 'FULLY_SPECIFIED', '1', NOW(), '0bb104e6-c1bb-4896-ae34-f594eae57197',
