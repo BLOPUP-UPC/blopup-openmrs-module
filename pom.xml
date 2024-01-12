@@ -10,7 +10,7 @@
 
 	<groupId>blopup.fileupload</groupId>
 	<artifactId>blopup.fileupload</artifactId>
-	<version>1.0.3</version>
+	<version>1.0.4</version>
 	<packaging>pom</packaging>
 	<name>Blopup fileupload module</name>
 	<description>module to send files to the server from the blopup mobile client</description>
