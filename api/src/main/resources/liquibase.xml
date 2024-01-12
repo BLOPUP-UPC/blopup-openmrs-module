@@ -42,6 +42,9 @@
         <comment>
             Creating concepts for treatment
         </comment>
-        <sqlFile path="treatment_concepts_and_concept_names.sql"/>
+        <sqlFile path="sql/2023-12-18_treatment_concepts_and_concept_names.sql"/>
+    </changeSet>
+    <changeSet id="2024-01-12_add_adherence_concept" author="blopup">
+        <sqlFile path="sql/2024-01-12_add_adherence_concept.sql"/>
     </changeSet>
 </databaseChangeLog>
