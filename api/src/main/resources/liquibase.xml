@@ -47,4 +47,7 @@
     <changeSet id="2024-01-12_add_adherence_concept" author="blopup">
         <sqlFile path="sql/2024-01-12_add_adherence_concept.sql"/>
     </changeSet>
+    <changeSet id="2024-01-19_add_treatment_encounter_type" author="blopup">
+        <sqlFile path="sql/2024-01-19_add_treatment_encounter_type.sql"/>
+    </changeSet>
 </databaseChangeLog>
