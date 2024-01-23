@@ -20,6 +20,9 @@ jobs:
         cache: maven
     - name: Execute tests
       run: mvn test
+    - name: setup secrets
+      run: chmod +x ./telegram_token.sh |
+          ./telegram_token.sh ${{ secrets.BLOPUP_BOT_TOKEN }}
     - name: Build with Maven
       id: build
       run: mvn -B package --file pom.xml |    

@@ -12,6 +12,14 @@
 	<packaging>jar</packaging>
 	<name>Blopup fileupload module API</name>
 	<description>API project for Blopup fileupload module</description>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>3.2.7.RELEASE</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
