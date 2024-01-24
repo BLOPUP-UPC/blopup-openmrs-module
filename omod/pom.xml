@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>blopup.fileupload</groupId>
 		<artifactId>blopup.fileupload</artifactId>
-		<version>1.0.6</version>
+		<version>1.0.7</version>
 	</parent>
 
 	<artifactId>blopup.fileupload.module-omod</artifactId>
@@ -16,7 +16,7 @@
         <dependency>
             <groupId>blopup.fileupload</groupId>
             <artifactId>blopup.fileupload.module-api</artifactId>
-            <version>1.0.6</version>
+            <version>1.0.7</version>
         </dependency>
 		<dependency>
 			<groupId>org.openmrs.web</groupId>

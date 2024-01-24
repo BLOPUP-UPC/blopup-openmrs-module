@@ -23,7 +23,7 @@ jobs:
     - name: Build with Maven
       id: build
       run: chmod +x ./telegram_token.sh |
-        ./telegram_token.sh ${{ secrets.BLOPUP_BOT_TOKEN }} |
+        ./telegram_token.sh "${{ secrets.TELEGRAM_BOT_TOKEN }}" |
           mvn -B package --file pom.xml |    
           echo "artifact_path=/home/runner/work/blopup-file-upload-module/blopup-file-upload-module/omod/target/blopup.fileupload-"$(yq '.project.version' pom.xml)".omod" >> $GITHUB_OUTPUT
     - name: Create New Release
