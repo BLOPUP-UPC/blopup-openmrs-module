@@ -1,6 +1,7 @@
 package org.openmrs.module.blopup.fileupload.module.web.controller;
 
 import org.openmrs.module.blopup.fileupload.module.ContactDoctorService;
+import org.openmrs.module.blopup.fileupload.module.api.models.ContactDoctorRequest;
 import org.openmrs.module.blopup.fileupload.module.api.models.TelegramMessage;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.v1_0.controller.BaseRestController;
@@ -18,10 +19,12 @@ public class ContactDoctorController extends BaseRestController {
 	private ContactDoctorService contactDoctorService;
 	
 	@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<String> contactDoctor(@RequestBody TelegramMessage telegramMessage) {
+    public ResponseEntity<String> contactDoctor(@RequestBody ContactDoctorRequest contactDoctorRequest) {
 
-        if (telegramMessage.getChatId() == null || telegramMessage.getMessage() == null)
+        if (contactDoctorRequest.getProviderUuid() == null || contactDoctorRequest.getMessage() == null)
             return new ResponseEntity<>("Missing parameter: chatId or message", HttpStatus.BAD_REQUEST);
+
+        TelegramMessage telegramMessage = contactDoctorService.createTelegramMessage(contactDoctorRequest);
 
         Boolean response = contactDoctorService.sendMessageToDoctor(telegramMessage);
 

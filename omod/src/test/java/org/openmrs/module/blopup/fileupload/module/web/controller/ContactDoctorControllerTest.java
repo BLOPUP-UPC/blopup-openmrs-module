@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openmrs.module.blopup.fileupload.module.ContactDoctorService;
+import org.openmrs.module.blopup.fileupload.module.api.models.ContactDoctorRequest;
 import org.openmrs.module.blopup.fileupload.module.api.models.TelegramMessage;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,13 +34,16 @@ public class ContactDoctorControllerTest {
 	
 	@Test
 	public void shouldRespond200WhenDoctorHasBeenContacted() throws Exception {
-		String chatId = "123456789";
+		String providerUuid = "123456789";
 		String message = "Hello Doctor";
 		
+		when(contactDoctorService.createTelegramMessage(any(ContactDoctorRequest.class))).thenReturn(
+		    new TelegramMessage(providerUuid, message));
 		when(contactDoctorService.sendMessageToDoctor(any(TelegramMessage.class))).thenReturn(true);
 		
 		mockMvc.perform(
-		    post("/rest/v1/contactDoctor").content("{\"chatId\":\"" + chatId + "\",\"message\":\"" + message + "\"}")
+		    post("/rest/v1/contactDoctor")
+		            .content("{\"providerUuid\":\"" + providerUuid + "\",\"message\":\"" + message + "\"}")
 		            .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(
 		    status().isCreated());
 		
@@ -48,10 +52,10 @@ public class ContactDoctorControllerTest {
 	
 	@Test
 	public void shouldRespondBadRequestIfAParameterIsMissing() throws Exception {
-		String chatId = "123456789";
+		String providerUuid = "123456789";
 		
 		mockMvc.perform(
-		    post("/rest/v1/contactDoctor").content("{\"chatId\":\"" + chatId + "\"}")
+		    post("/rest/v1/contactDoctor").content("{\"providerUuid\":\"" + providerUuid + "\"}")
 		            .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(
 		    status().isBadRequest());
 		
@@ -60,13 +64,16 @@ public class ContactDoctorControllerTest {
 	
 	@Test
 	public void shouldRespondServerErrorWhenSendingMessageFails() throws Exception {
-		String chatId = "123456789";
+		String providerUuid = "123456789";
 		String message = "Hello Doctor";
 		
+		when(contactDoctorService.createTelegramMessage(any(ContactDoctorRequest.class))).thenReturn(
+		    new TelegramMessage(providerUuid, message));
 		when(contactDoctorService.sendMessageToDoctor(any(TelegramMessage.class))).thenReturn(false);
 		
 		mockMvc.perform(
-		    post("/rest/v1/contactDoctor").content("{\"chatId\":\"" + chatId + "\",\"message\":\"" + message + "\"}")
+		    post("/rest/v1/contactDoctor")
+		            .content("{\"providerUuid\":\"" + providerUuid + "\",\"message\":\"" + message + "\"}")
 		            .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(
 		    status().isInternalServerError());
 		

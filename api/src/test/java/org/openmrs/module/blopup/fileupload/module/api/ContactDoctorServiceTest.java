@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.openmrs.module.blopup.fileupload.module.ContactDoctorService;
+import org.openmrs.module.blopup.fileupload.module.ProviderRepository;
+import org.openmrs.module.blopup.fileupload.module.api.models.ContactDoctorRequest;
 import org.openmrs.module.blopup.fileupload.module.api.models.TelegramMessage;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
@@ -23,6 +25,9 @@ public class ContactDoctorServiceTest {
 	
 	@Mock
 	private Environment environment;
+	
+	@Mock
+	private ProviderRepository providerRepository;
 	
 	@Before
 	public void setUp() {
@@ -65,5 +70,17 @@ public class ContactDoctorServiceTest {
 		
 		mockServer.verify();
 		assert (!response);
+	}
+	
+	@Test
+	public void shouldCreateTelegramMessageFromRequest() {
+		ContactDoctorRequest contactDoctorRequest = new ContactDoctorRequest("providerUuid", "message");
+		
+		when(providerRepository.getProviderChatId(contactDoctorRequest.getProviderUuid())).thenReturn("6592323167");
+		
+		TelegramMessage telegramMessage = contactDoctorService.createTelegramMessage(contactDoctorRequest);
+		
+		assert (telegramMessage.getChatId().equals("6592323167"));
+		assert (telegramMessage.getMessage().equals("message"));
 	}
 }
