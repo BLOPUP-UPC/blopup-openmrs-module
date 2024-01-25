@@ -11,6 +11,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.logging.Logger;
+
 @Service
 @PropertySource("classpath:telegram.properties")
 public class ContactDoctorService extends BaseOpenmrsService {
@@ -20,7 +22,7 @@ public class ContactDoctorService extends BaseOpenmrsService {
 	@Autowired
 	private Environment environment;
 	
-	public void sendMessageToDoctor(TelegramMessage telegramMessage) {
+	public Boolean sendMessageToDoctor(TelegramMessage telegramMessage) {
 
         String token = environment.getProperty("telegram.bot.token");
 
@@ -31,10 +33,12 @@ public class ContactDoctorService extends BaseOpenmrsService {
 
             restTemplate.exchange("https://api.telegram.org/bot" + token + "/sendMessage",
                     HttpMethod.POST, new HttpEntity<>(body, headers), String.class);
-
+            return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger("ContactDoctorService").warning("Error sending message to doctor: " + e.getMessage());
+            Logger.getLogger("ContactDoctorService").warning(token);
+            return false;
         }
     }
 	

@@ -42,8 +42,28 @@ public class ContactDoctorServiceTest {
 		        .andExpect(method(HttpMethod.POST)).andExpect(content().string(body))
 		        .andRespond(withStatus(HttpStatus.OK).body("OK"));
 		
-		contactDoctorService.sendMessageToDoctor(new TelegramMessage(chatId, message));
+		Boolean response = contactDoctorService.sendMessageToDoctor(new TelegramMessage(chatId, message));
 		
 		mockServer.verify();
+		assert (response);
+	}
+	
+	@Test
+	public void shouldReturnFalseWhenMessageToTelegramFails() {
+		String chatId = "6592323167";
+		String message = "Hello beautiful";
+		String body = "{\"chat_id\":\"" + chatId + "\",\"text\":\"" + message + "\"}";
+		
+		when(environment.getProperty("telegram.bot.token")).thenReturn("test_token");
+		
+		MockRestServiceServer mockServer = MockRestServiceServer.createServer(contactDoctorService.getRestTemplate());
+		mockServer.expect(requestTo("https://api.telegram.org/bot" + "test_token" + "/sendMessage"))
+		        .andExpect(method(HttpMethod.POST)).andExpect(content().string(body))
+		        .andRespond(withStatus(HttpStatus.BAD_REQUEST).body("Bad Request"));
+		
+		Boolean response = contactDoctorService.sendMessageToDoctor(new TelegramMessage(chatId, message));
+		
+		mockServer.verify();
+		assert (!response);
 	}
 }

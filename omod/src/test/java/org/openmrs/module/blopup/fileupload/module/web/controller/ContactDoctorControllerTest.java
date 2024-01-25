@@ -35,7 +35,8 @@ public class ContactDoctorControllerTest {
 	public void shouldRespond200WhenDoctorHasBeenContacted() throws Exception {
 		String chatId = "123456789";
 		String message = "Hello Doctor";
-		TelegramMessage telegramMessage = new TelegramMessage(chatId, message);
+		
+		when(contactDoctorService.sendMessageToDoctor(any(TelegramMessage.class))).thenReturn(true);
 		
 		mockMvc.perform(
 		    post("/rest/v1/contactDoctor").content("{\"chatId\":\"" + chatId + "\",\"message\":\"" + message + "\"}")
@@ -56,4 +57,20 @@ public class ContactDoctorControllerTest {
 		
 		verify(contactDoctorService, times(0)).sendMessageToDoctor(any(TelegramMessage.class));
 	}
+	
+	@Test
+	public void shouldRespondServerErrorWhenSendingMessageFails() throws Exception {
+		String chatId = "123456789";
+		String message = "Hello Doctor";
+		
+		when(contactDoctorService.sendMessageToDoctor(any(TelegramMessage.class))).thenReturn(false);
+		
+		mockMvc.perform(
+		    post("/rest/v1/contactDoctor").content("{\"chatId\":\"" + chatId + "\",\"message\":\"" + message + "\"}")
+		            .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(
+		    status().isInternalServerError());
+		
+		verify(contactDoctorService, times(1)).sendMessageToDoctor(any(TelegramMessage.class));
+	}
+	
 }

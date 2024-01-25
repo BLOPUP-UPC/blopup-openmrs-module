@@ -23,7 +23,11 @@ public class ContactDoctorController extends BaseRestController {
         if (telegramMessage.getChatId() == null || telegramMessage.getMessage() == null)
             return new ResponseEntity<>("Missing parameter: chatId or message", HttpStatus.BAD_REQUEST);
 
-        contactDoctorService.sendMessageToDoctor(telegramMessage);
+        Boolean response = contactDoctorService.sendMessageToDoctor(telegramMessage);
+
+        if (!response) {
+            return new ResponseEntity<>("Error sending message to doctor", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
