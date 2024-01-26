@@ -1,4 +1,4 @@
-package org.openmrs.module.blopup.fileupload.module;
+package org.openmrs.module.blopup.fileupload.module.api;
 
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.blopup.fileupload.module.api.models.ContactDoctorRequest;
@@ -22,15 +22,15 @@ public class ContactDoctorService extends BaseOpenmrsService {
 	private Environment environment;
 	
 	@Autowired
-	private ProviderRepository providerRepository;
+	private ProviderServiceImpl providerService;
 	
 	public Boolean sendMessageToDoctor(TelegramMessage telegramMessage) {
-
         String token = environment.getProperty("telegram.bot.token");
 
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-Type", "application/json");
+
             String body = "{\"chat_id\":\"" + telegramMessage.getChatId() + "\",\"text\":\"" + telegramMessage.getMessage() + "\"}";
 
             ResponseEntity<String> response = restTemplate.exchange("https://api.telegram.org/bot" + token + "/sendMessage",
@@ -50,7 +50,7 @@ public class ContactDoctorService extends BaseOpenmrsService {
     }
 	
 	public TelegramMessage createTelegramMessage(ContactDoctorRequest contactDoctorRequest) {
-		String chatId = providerRepository.getProviderChatId(contactDoctorRequest.getProviderUuid());
+		String chatId = providerService.getProviderChatId(contactDoctorRequest.getProviderUuid());
 		return new TelegramMessage(chatId, contactDoctorRequest.getMessage());
 	}
 	

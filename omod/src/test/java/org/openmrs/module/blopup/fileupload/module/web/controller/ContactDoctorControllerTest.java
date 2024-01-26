@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.openmrs.module.blopup.fileupload.module.ContactDoctorService;
+import org.openmrs.module.blopup.fileupload.module.api.ContactDoctorService;
 import org.openmrs.module.blopup.fileupload.module.api.models.ContactDoctorRequest;
 import org.openmrs.module.blopup.fileupload.module.api.models.TelegramMessage;
 import org.springframework.http.MediaType;
