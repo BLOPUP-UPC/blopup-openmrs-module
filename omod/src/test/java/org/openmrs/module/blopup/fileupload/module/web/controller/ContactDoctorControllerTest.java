@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openmrs.module.blopup.fileupload.module.api.ContactDoctorService;
 import org.openmrs.module.blopup.fileupload.module.api.models.ContactDoctorRequest;
-import org.openmrs.module.blopup.fileupload.module.api.models.TelegramMessage;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -37,9 +36,7 @@ public class ContactDoctorControllerTest {
 		String providerUuid = "123456789";
 		String message = "Hello Doctor";
 		
-		when(contactDoctorService.createTelegramMessage(any(ContactDoctorRequest.class))).thenReturn(
-		    new TelegramMessage(providerUuid, message));
-		when(contactDoctorService.sendMessageToDoctor(any(TelegramMessage.class))).thenReturn(true);
+		when(contactDoctorService.sendMessageToDoctor(any(ContactDoctorRequest.class))).thenReturn(true);
 		
 		mockMvc.perform(
 		    post("/rest/v1/contactDoctor")
@@ -47,7 +44,7 @@ public class ContactDoctorControllerTest {
 		            .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(
 		    status().isCreated());
 		
-		verify(contactDoctorService).sendMessageToDoctor(any(TelegramMessage.class));
+		verify(contactDoctorService).sendMessageToDoctor(any(ContactDoctorRequest.class));
 	}
 	
 	@Test
@@ -59,7 +56,7 @@ public class ContactDoctorControllerTest {
 		            .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(
 		    status().isBadRequest());
 		
-		verify(contactDoctorService, times(0)).sendMessageToDoctor(any(TelegramMessage.class));
+		verify(contactDoctorService, times(0)).sendMessageToDoctor(any(ContactDoctorRequest.class));
 	}
 	
 	@Test
@@ -67,9 +64,7 @@ public class ContactDoctorControllerTest {
 		String providerUuid = "123456789";
 		String message = "Hello Doctor";
 		
-		when(contactDoctorService.createTelegramMessage(any(ContactDoctorRequest.class))).thenReturn(
-		    new TelegramMessage(providerUuid, message));
-		when(contactDoctorService.sendMessageToDoctor(any(TelegramMessage.class))).thenReturn(false);
+		when(contactDoctorService.sendMessageToDoctor(any(ContactDoctorRequest.class))).thenReturn(false);
 		
 		mockMvc.perform(
 		    post("/rest/v1/contactDoctor")
@@ -77,7 +72,7 @@ public class ContactDoctorControllerTest {
 		            .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(
 		    status().isInternalServerError());
 		
-		verify(contactDoctorService, times(1)).sendMessageToDoctor(any(TelegramMessage.class));
+		verify(contactDoctorService, times(1)).sendMessageToDoctor(any(ContactDoctorRequest.class));
 	}
 	
 }

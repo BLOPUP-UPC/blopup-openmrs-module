@@ -24,7 +24,9 @@ public class ContactDoctorService extends BaseOpenmrsService {
 	@Autowired
 	private ProviderServiceImpl providerService;
 	
-	public Boolean sendMessageToDoctor(TelegramMessage telegramMessage) {
+	public Boolean sendMessageToDoctor(ContactDoctorRequest request) {
+        String chatId = providerService.getProviderChatId(request.getProviderUuid());
+        TelegramMessage telegramMessage = new TelegramMessage(chatId, request.getMessage());
         String token = environment.getProperty("telegram.bot.token");
 
         try {
@@ -48,11 +50,6 @@ public class ContactDoctorService extends BaseOpenmrsService {
             return false;
         }
     }
-	
-	public TelegramMessage createTelegramMessage(ContactDoctorRequest contactDoctorRequest) {
-		String chatId = providerService.getProviderChatId(contactDoctorRequest.getProviderUuid());
-		return new TelegramMessage(chatId, contactDoctorRequest.getMessage());
-	}
 	
 	public RestTemplate getRestTemplate() {
 		return restTemplate;

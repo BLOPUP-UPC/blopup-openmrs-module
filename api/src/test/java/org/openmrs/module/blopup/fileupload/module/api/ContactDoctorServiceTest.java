@@ -37,15 +37,17 @@ public class ContactDoctorServiceTest {
 		String chatId = "6592323167";
 		String message = "Hello beautiful";
 		String body = "{\"chat_id\":\"" + chatId + "\",\"text\":\"" + message + "\"}";
+		ContactDoctorRequest contactDoctorRequest = new ContactDoctorRequest("providerUuid", "message");
 		
 		when(environment.getProperty("telegram.bot.token")).thenReturn("test_token");
+		when(providerService.getProviderChatId(contactDoctorRequest.getProviderUuid())).thenReturn("6592323167");
 		
 		MockRestServiceServer mockServer = MockRestServiceServer.createServer(contactDoctorService.getRestTemplate());
 		mockServer.expect(requestTo("https://api.telegram.org/bot" + "test_token" + "/sendMessage"))
 		        .andExpect(method(HttpMethod.POST)).andExpect(content().string(body))
 		        .andRespond(withStatus(HttpStatus.OK).body("OK"));
 		
-		Boolean response = contactDoctorService.sendMessageToDoctor(new TelegramMessage(chatId, message));
+		Boolean response = contactDoctorService.sendMessageToDoctor(new ContactDoctorRequest("providerUuid", message));
 		
 		mockServer.verify();
 		assert (response);
@@ -56,29 +58,19 @@ public class ContactDoctorServiceTest {
 		String chatId = "6592323167";
 		String message = "Hello beautiful";
 		String body = "{\"chat_id\":\"" + chatId + "\",\"text\":\"" + message + "\"}";
+		ContactDoctorRequest contactDoctorRequest = new ContactDoctorRequest("providerUuid", "message");
 		
 		when(environment.getProperty("telegram.bot.token")).thenReturn("test_token");
+		when(providerService.getProviderChatId(contactDoctorRequest.getProviderUuid())).thenReturn("6592323167");
 		
 		MockRestServiceServer mockServer = MockRestServiceServer.createServer(contactDoctorService.getRestTemplate());
 		mockServer.expect(requestTo("https://api.telegram.org/bot" + "test_token" + "/sendMessage"))
 		        .andExpect(method(HttpMethod.POST)).andExpect(content().string(body))
 		        .andRespond(withStatus(HttpStatus.BAD_REQUEST).body("Bad Request"));
 		
-		Boolean response = contactDoctorService.sendMessageToDoctor(new TelegramMessage(chatId, message));
+		Boolean response = contactDoctorService.sendMessageToDoctor(new ContactDoctorRequest("providerUuid", message));
 		
 		mockServer.verify();
 		assert (!response);
-	}
-	
-	@Test
-	public void shouldCreateTelegramMessageFromRequest() {
-		ContactDoctorRequest contactDoctorRequest = new ContactDoctorRequest("providerUuid", "message");
-		
-		when(providerService.getProviderChatId(contactDoctorRequest.getProviderUuid())).thenReturn("6592323167");
-		
-		TelegramMessage telegramMessage = contactDoctorService.createTelegramMessage(contactDoctorRequest);
-		
-		assert (telegramMessage.getChatId().equals("6592323167"));
-		assert (telegramMessage.getMessage().equals("message"));
 	}
 }
