@@ -2,7 +2,13 @@
 
 ## Description
 
-This is a custom OpenMRS module to upload the recordings of the patients' legal consent and store it in our server. 
+This is a custom OpenMRS module to add new functionality directly related to the Blopup Mobile App.
+This is a breakdown of the repository content:
+
+- File upload controller and service to upload legal consent audio files
+- Controller and service to send a message to a specific doctor via Telegram
+- Liquibase migrations to support treatment type encounters and observations
+- Liquibase migrations to support sending messages to the doctor (adding chatID as provider attribute)
 
 ## Releasing a new version
 
