@@ -26,10 +26,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * This class configured as controller using annotation and mapped with the URL of
- * 'module/blopup.fileupload.module/blopup.fileupload.moduleLink.form'.
+ * 'module/blopup.openmrs.module/blopup.openmrs.moduleLink.form'.
  */
-@Controller("${rootrootArtifactId}.BlopupfileuploadmoduleController")
-@RequestMapping(value = "module/blopup.fileupload.module/blopup.fileupload.module.form")
+@Controller("${rootrootArtifactId}.BlopupopenmrsmoduleController")
+@RequestMapping(value = "module/blopup.openmrs.module/blopup.openmrs.module.form")
 public class BlopupopenmrsmoduleController {
 	
 	/** Logger for this class and subclasses */

@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-@Component("blopup.fileupload.module.FileStorageService")
+@Component("blopup.openmrs.module.FileStorageService")
 public class FileStorageService {
 	
 	File RECORDING_DIRECTORY = new File("../../../opt/app/legalConsentStore");

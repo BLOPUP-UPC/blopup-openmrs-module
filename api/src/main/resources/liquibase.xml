@@ -14,7 +14,7 @@
     -->
 
     <!-- Uncomment the changeset below if you want to make the Legal Consent class persistable, see also Item and BlopupfileuploadmoduleDaoTest -->
-    <changeSet id="blopup.fileupload.module-2023-06-07-16-32" author="raff">
+    <changeSet id="blopup.openmrs.module-2023-06-07-16-32" author="raff">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="blopup_legal_consent"/>

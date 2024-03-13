@@ -16,7 +16,7 @@ import org.openmrs.module.blopup.openmrs.module.LegalConsent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository("blopup.fileupload.module.BlopupfileuploadmoduleDao")
+@Repository("blopup.openmrs.module.BlopupfileuploadmoduleDao")
 public class BlopupfileuploadmoduleDao {
 	
 	@Autowired

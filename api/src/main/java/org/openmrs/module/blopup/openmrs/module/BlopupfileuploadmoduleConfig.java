@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 /**
  * Contains module's config.
  */
-@Component("blopup.fileupload.module.BlopupfileuploadmoduleConfig")
+@Component("blopup.openmrs.module.BlopupfileuploadmoduleConfig")
 public class BlopupfileuploadmoduleConfig {
 	
-	public final static String MODULE_PRIVILEGE = "Blopup fileupload module Privilege";
+	public final static String MODULE_PRIVILEGE = "Blopup openmrs module Privilege";
 }

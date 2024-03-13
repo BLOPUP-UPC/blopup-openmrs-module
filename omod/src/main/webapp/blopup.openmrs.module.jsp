@@ -2,7 +2,7 @@
 
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
-<h2><spring:message code="blopup.fileupload.module-omod.title" /></h2>
+<h2><spring:message code="blopup.openmrs.module-omod.title" /></h2>
 
 <br/>
 <table>

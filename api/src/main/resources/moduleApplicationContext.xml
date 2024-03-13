@@ -46,7 +46,7 @@
         </property>
     </bean>
 
-    <!-- Adds BlopupfileuploadmoduleService to OpenMRS context so it can be accessed
+    <!-- Adds BlopupopenmrsmoduleService to OpenMRS context so it can be accessed
     calling Context.getService(BlopupfileuploadmoduleService.class) -->
     <bean parent="serviceContext">
         <property name="moduleService">

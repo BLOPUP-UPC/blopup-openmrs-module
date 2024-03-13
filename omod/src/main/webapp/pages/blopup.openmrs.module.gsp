@@ -12,4 +12,4 @@ Hello, world.
     You are not logged in.
 <% } %>
 
-${ ui.includeFragment("blopup.fileupload.module", "users") }
+${ ui.includeFragment("blopup.openmrs.module", "users") }
