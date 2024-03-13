@@ -23,19 +23,19 @@
   		    http://www.springframework.org/schema/util
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-    <context:component-scan base-package="org.openmrs.module.blopup.fileupload.module" />
+    <context:component-scan base-package="org.openmrs.module.blopup.openmrs.module" />
 
     <!-- Wraps BlopupfileuploadmoduleService methods in DB transactions and OpenMRS interceptors,
     which set audit info like dateCreated, changedBy, etc.-->
-    <bean id="blopup.fileupload.module.BlopupfileuploadmoduleService"
+    <bean id="blopup.openmrs.module.BlopupfileuploadmoduleService"
             class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="transactionManager">
             <ref bean="transactionManager" />
         </property>
         <property name="target">
             <bean class="org.openmrs.module.blopup.openmrs.module.api.impl.BlopupfileuploadmoduleServiceImpl">
-                <property name="dao" ref="blopup.fileupload.module.BlopupfileuploadmoduleDao" />
-                <property name="fileStorageService" ref="blopup.fileupload.module.FileStorageService" />
+                <property name="dao" ref="blopup.openmrs.module.BlopupfileuploadmoduleDao" />
+                <property name="fileStorageService" ref="blopup.openmrs.module.FileStorageService" />
             </bean>
         </property>
         <property name="preInterceptors">
@@ -52,10 +52,10 @@
         <property name="moduleService">
             <list>
                 <value>org.openmrs.module.blopup.openmrs.module.api.BlopupfileuploadmoduleService</value>
-                <ref bean="blopup.fileupload.module.BlopupfileuploadmoduleService" />
+                <ref bean="blopup.openmrs.module.BlopupfileuploadmoduleService" />
             </list>
         </property>
     </bean>
-    <bean id="blopup.fileupload.module.FileStorageService"
+    <bean id="blopup.openmrs.module.FileStorageService"
           class="org.openmrs.module.blopup.openmrs.module.FileStorageService"/>
 </beans>
