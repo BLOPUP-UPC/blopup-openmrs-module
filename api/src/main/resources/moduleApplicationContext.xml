@@ -33,7 +33,7 @@
             <ref bean="transactionManager" />
         </property>
         <property name="target">
-            <bean class="org.openmrs.module.blopup.fileupload.module.api.impl.BlopupfileuploadmoduleServiceImpl">
+            <bean class="org.openmrs.module.blopup.openmrs.module.api.impl.BlopupfileuploadmoduleServiceImpl">
                 <property name="dao" ref="blopup.fileupload.module.BlopupfileuploadmoduleDao" />
                 <property name="fileStorageService" ref="blopup.fileupload.module.FileStorageService" />
             </bean>
@@ -51,11 +51,11 @@
     <bean parent="serviceContext">
         <property name="moduleService">
             <list>
-                <value>org.openmrs.module.blopup.fileupload.module.api.BlopupfileuploadmoduleService</value>
+                <value>org.openmrs.module.blopup.openmrs.module.api.BlopupfileuploadmoduleService</value>
                 <ref bean="blopup.fileupload.module.BlopupfileuploadmoduleService" />
             </list>
         </property>
     </bean>
     <bean id="blopup.fileupload.module.FileStorageService"
-          class="org.openmrs.module.blopup.fileupload.module.FileStorageService"/>
+          class="org.openmrs.module.blopup.openmrs.module.FileStorageService"/>
 </beans>

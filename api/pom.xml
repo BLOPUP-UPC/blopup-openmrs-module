@@ -3,15 +3,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>blopup.fileupload</groupId>
-        <artifactId>blopup.fileupload</artifactId>
+        <groupId>blopup.openmrs</groupId>
+        <artifactId>blopup.openmrs.module</artifactId>
         <version>1.0.8</version>
     </parent>
 
-	<artifactId>blopup.fileupload.module-api</artifactId>
+	<artifactId>blopup.openmrs.module-api</artifactId>
 	<packaging>jar</packaging>
-	<name>Blopup fileupload module API</name>
-	<description>API project for Blopup fileupload module</description>
+	<name>Blopup openmrs module API</name>
+	<description>API project for Blopup openmrs module</description>
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>

@@ -8,19 +8,19 @@
         <version>1.1.0</version>
     </parent>
 
-	<groupId>blopup.fileupload</groupId>
-	<artifactId>blopup.fileupload</artifactId>
+	<groupId>blopup.openmrs</groupId>
+	<artifactId>blopup.openmrs.module</artifactId>
 	<version>1.0.8</version>
 	<packaging>pom</packaging>
-	<name>Blopup fileupload module</name>
+	<name>Blopup openmrs module</name>
 	<description>module to send files to the server from the blopup mobile client</description>
 
 	<url>https://wiki.openmrs.org/x/FQ4z</url>
 
 	<scm>
-		<connection>scm:git:git@github.com:openmrs/openmrs-module-blopup.fileupload.module.git</connection>
-		<developerConnection>scm:git:git@github.com:openmrs/openmrs-module-blopup.fileupload.module.git</developerConnection>
-		<url>https://github.com/openmrs/openmrs-module-blopup.fileupload.module/</url>
+		<connection>scm:git:git@github.com:openmrs/openmrs-module-blopup.openmrs.module.git</connection>
+		<developerConnection>scm:git:git@github.com:openmrs/openmrs-module-blopup.openmrs.module.git</developerConnection>
+		<url>https://github.com/openmrs/openmrs-module-blopup.openmrs.module/</url>
 	</scm>
 
 	<modules>

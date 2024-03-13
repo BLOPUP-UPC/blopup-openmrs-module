@@ -2,20 +2,20 @@
 		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>blopup.fileupload</groupId>
-		<artifactId>blopup.fileupload</artifactId>
+		<groupId>blopup.openmrs</groupId>
+		<artifactId>blopup.openmrs.module</artifactId>
 		<version>1.0.8</version>
 	</parent>
 
-	<artifactId>blopup.fileupload.module-omod</artifactId>
+	<artifactId>blopup.openmrs.module-omod</artifactId>
 	<packaging>jar</packaging>
-	<name>Blopup fileupload module OMOD</name>
-	<description>Omod submodule for Blopup fileupload module</description>
+	<name>Blopup openmrs module OMOD</name>
+	<description>Omod submodule for Blopup openmrs module</description>
 
 	<dependencies>
         <dependency>
-            <groupId>blopup.fileupload</groupId>
-            <artifactId>blopup.fileupload.module-api</artifactId>
+            <groupId>blopup.openmrs</groupId>
+            <artifactId>blopup.openmrs.module-api</artifactId>
             <version>1.0.8</version>
         </dependency>
 		<dependency>
