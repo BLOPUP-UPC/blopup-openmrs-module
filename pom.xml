@@ -17,12 +17,6 @@
 
 	<url>https://wiki.openmrs.org/x/FQ4z</url>
 
-	<scm>
-		<connection>scm:git:git@github.com:openmrs/openmrs-module-blopup.openmrs.module.git</connection>
-		<developerConnection>scm:git:git@github.com:openmrs/openmrs-module-blopup.openmrs.module.git</developerConnection>
-		<url>https://github.com/openmrs/openmrs-module-blopup.openmrs.module/</url>
-	</scm>
-
 	<modules>
 		<module>api</module>
 		<module>omod</module>

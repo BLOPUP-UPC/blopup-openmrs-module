@@ -21,8 +21,6 @@ jobs:
     - name: Get telegram bot token
       run: chmod +x ./telegram_token.sh |
         ./telegram_token.sh "${{ secrets.TELEGRAM_BOT_TOKEN }}"
-    - name: Execute tests
-      run: mvn test
     - name: Build with Maven
       id: build
       run: mvn -B package --file pom.xml |    
