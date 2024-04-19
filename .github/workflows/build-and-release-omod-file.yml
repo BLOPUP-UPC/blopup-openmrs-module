@@ -24,7 +24,7 @@ jobs:
     - name: Build with Maven
       id: build
       run: mvn -B package --file pom.xml |    
-          echo "artifact_path=/home/runner/work/blopup-openmrs-module/blopup-openmrs-module/omod/target/blopup.openmrs.module-"$(yq '.project.version' pom.xml)".omod" >> $GITHUB_OUTPUT
+          echo "artifact_path=./omod/target/blopup.openmrs.module-"$(yq '.project.version' pom.xml)".omod" >> $GITHUB_OUTPUT
     - name: Create New Release
       id: create_release
       uses: ncipollo/release-action@v1
