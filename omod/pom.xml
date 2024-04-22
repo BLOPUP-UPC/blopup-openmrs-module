@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>blopup.openmrs</groupId>
 		<artifactId>blopup.openmrs.module</artifactId>
-		<version>2.0.7</version>
+		<version>2.0.8</version>
 	</parent>
 
 	<artifactId>blopup.openmrs.module-omod</artifactId>
@@ -16,7 +16,7 @@
         <dependency>
             <groupId>blopup.openmrs</groupId>
             <artifactId>blopup.openmrs.module-api</artifactId>
-            <version>2.0.7</version>
+            <version>2.0.8</version>
         </dependency>
 		<dependency>
 			<groupId>org.openmrs.web</groupId>
