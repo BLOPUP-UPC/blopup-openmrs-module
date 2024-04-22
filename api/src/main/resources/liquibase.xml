@@ -59,4 +59,7 @@
     <changeSet id="2024-03-18_add_register_number_provider_attribute_type" author="blopup">
         <sqlFile path="sql/2024-03-18_add_register_number_provider_attribute_type.sql"/>
     </changeSet>
+    <changeSet id="2024-04-22_add_nationality_person_attribute_type" author="blopup">
+        <sqlFile path="sql/2024-04-22_add_nationality_person_attribute_type.sql"/>
+    </changeSet>
 </databaseChangeLog>
